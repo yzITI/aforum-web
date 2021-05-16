@@ -23,6 +23,10 @@ async function login () {
   else window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 
+function jump () {
+  window.location.href = 'http://61.155.62.52/yzzx'
+}
+
 </script>
 
 <style scoped>
