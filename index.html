@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="overflow: auto;">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>数学在线讨论</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.0.3/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@latest/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@4.0.3/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.0.0/dist/js-yaml.min.js" async></script>
+    <script type="text/javascript">
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], formatError: (jax, err) => jax.formatError(err) },
+        options: { enableMenu: false }
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-chtml.js"></script>
+    <style>
+      * { outline: none; }
+      mjx-container { max-width: 95%; overflow: auto; }
+    </style>
+  </head>
+  <body style="margin: 0;">
+    <noscript>
+      <strong>很抱歉，因为浏览器禁用了JavaScript，Aforum不能正常运行。请启用浏览器的JavaScript并刷新本页。</strong>
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
