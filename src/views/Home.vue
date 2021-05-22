@@ -8,6 +8,12 @@
         <p>点击进入</p>
       </div>
     </section>
+    <section v-if="content" class="show full">
+      <markdown :content="content"></markdown>
+    </section>
+    <section class="full">
+      <list></list>
+    </section>
     <section style="height: 100vh;">
       <div @click="jump" style="position: absolute; z-index: 100" class="full"></div>
       <iframe style="border: none;" class="full" src="http://www.yzzx.org/"></iframe>
@@ -16,6 +22,26 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import axios from 'axios'
+import List from '../components/List.vue'
+import Markdown from '../components/Markdown.vue'
+import { updateTopic, updateComments, updateKeyword, getList } from '../state/state.js'
+ref: content = ''
+
+onMounted(() => {
+  getList(true)
+  updateTopic(null)
+  updateComments([])
+  updateKeyword('')
+  getHome()
+})
+
+async function getHome () {
+  await axios.get('/api/topic/HOME')
+    .then(res => { content = res.data.content })
+    .catch(console.log)
+}
 
 async function login () {
   await new Promise((resolve, reject) => setTimeout(resolve, 500))
