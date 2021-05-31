@@ -1,8 +1,7 @@
 <template>
-  <div class="elevation-2 card" @click="detail(info._id)" :style="cardStyle">
+  <div class="box p-1 m-1" @click="detail(info._id)" :style="cardStyle">
     <div>
-      <div style="margin-top: 5px;" class="headline">{{ info.title }}</div>
-      <icons :topic="info"></icons>
+      <h1 style="margin-top: 5px;" class="title is-4">{{ info.title }}</h1>
     </div>
     <div v-for="(tag, index) in info.tag" :key="index" style="margin: 5px 2px;">{{ tag }}</div>
     <div style="margin: 2px;"></div>
@@ -15,13 +14,15 @@
 
 <script setup>
 import { computed, defineProps } from 'vue'
+import { useRouter } from 'vue-router'
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const props = defineProps(['info'])
 const info = props.info
+const router = useRouter()
 
 const cardStyle = computed(() => {
-  if (info._id.indexOf('HOME') === 0) return { borderLeft: '4px solid #DB4437' }
-  if (info.pin) return { borderLeft: '4px solid #1e88e5' }
+  if (info._id.indexOf('HOME') === 0) return { borderLeft: '4px solid #5ECDB3' }
+  if (info.pin) return { borderLeft: '4px solid #5ECDB3' }
   return {}
 })
 
@@ -33,7 +34,7 @@ const parseDate = (timestamp) => {
   return date + ' ' + time
 }
 const detail = (id) => {
-  this.$router.push('/topic/' + id)
+  router.push('/topic/' + id)
 }
 
 </script>

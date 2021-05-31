@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { list, keyword, result } from '../state/state.js'
+import { list, keyword, result } from '../plugins/state.js'
 import ListItem from './ListItem.vue'
 import { computed } from 'vue'
 const all = computed(() => {

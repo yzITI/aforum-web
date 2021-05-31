@@ -22,30 +22,24 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import axios from 'axios'
 import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
-import { updateTopic, updateComments, updateKeyword, getList } from '../state/state.js'
+import { topic, comments, keyword, getList, SS } from '../plugins/state.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 ref: content = ''
 
-onMounted(() => {
-  getList(true)
-  updateTopic(null)
-  updateComments([])
-  updateKeyword('')
-  getHome()
-})
+getList(true)
+topic.value = null
+comments.value = []
+keyword.value = ''
 
-async function getHome () {
-  await axios.get('/api/topic/HOME')
-    .then(res => { content = res.data.content })
-    .catch(console.log)
-}
+axios.get('/api/topic/HOME')
+  .then(res => { content = res.data.content })
+  .catch(console.log)
 
-async function login () {
-  await new Promise((resolve, reject) => setTimeout(resolve, 500))
-  if (window.sessionStorage.token) this.$router.push('/main')
+function login () {
+  if (SS.token) router.push('/main')
   else window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 
@@ -112,6 +106,7 @@ section {
 h1 {
   text-align: center;
   font-size: 3.5rem;
+  font-weight: bold;
 }
 h2 {
   font-size: 1.8rem;
