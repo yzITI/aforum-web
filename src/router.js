@@ -25,6 +25,11 @@ const routes = [
     path: '/admin',
     name: '管理',
     component: () => import('./views/Admin.vue')
+  },
+  {
+    path: '/login',
+    name: '登陆',
+    component: () => import('./views/Login.vue')
   }
 ]
 
