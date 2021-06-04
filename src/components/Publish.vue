@@ -1,19 +1,21 @@
 <template>
   <div class="modal" :class="{ 'is-active': modal }">
     <div class="modal-background" @click="modal = false"></div>
-    <div class="modal-content" style="width: auto;">
+    <div class="modal-content" style="width: 70%;">
       <div class="box">
+        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag">{{ t }}</span>
+        <input class="input mb-2 mt-2" v-model="tag" @keydown.enter="add" placeholder="输入标签，回车添加">
         <template v-if="isAdmin">
-          <label class="checkbox"><input type="checkbox" v-model="setting.pin">置顶讨论</label>
-          <label class="checkbox"><input type="checkbox" v-model="setting.hide">隐藏讨论</label>
-          <label class="checkbox"><input type="checkbox" v-model="setting.restrict">评论互不可见</label>
-          <label class="checkbox"><input type="checkbox" v-model="setting.public">公开到首页</label>
+          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.pin">置顶讨论</label>
+          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.hide">隐藏讨论</label>
+          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.restrict">评论互不可见</label>
+          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
         </template>
-        <label class="checkbox"><input type="checkbox" v-model="setting.public">公开到首页</label>
-        <span class="tag" v-for="t in setting.tag">{{ t }}</span>
-        <input class="input" v-modal="tag" @keydown.enter="add">
-        <button v-if="isAdmin && topic && !draft" class="button is-info" @click="router.push('/edit')">修改内容</button>
-        <button class="button is-primary" :class="{ 'is-loading': loading }" @click="submit">发布</button>
+        <label class="checkbox"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
+        <div class="buttons mt-2">
+          <button v-if="isAdmin && topic && !draft" class="button is-info is-small" @click="router.push('/edit')">修改内容</button>
+          <button class="button is-primary is-small" :class="{ 'is-loading': loading }" @click="submit">发布</button>
+        </div>
       </div>
     </div>
   </div>
@@ -44,7 +46,6 @@ ref: title = computed(() => {
 })
 
 function add () {
-  console.log(tag)
   if (!tag.length) return
   setting.tag.push(tag)
   tag = ''

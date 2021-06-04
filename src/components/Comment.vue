@@ -1,9 +1,10 @@
 <template>
   <div class="box">
-    <div class="title is-5" style="margin: 0; padding-bottom: 0px;">
-      {{ name }} &nbsp; {{ parseDate }} &nbsp;<button class="button is-danger" @click="deleteComment(comment._id)">
+    <div class="is-5" style="margin: 0; padding-bottom: 0px;">
+      {{ name }} &nbsp; {{ parseDate }} &nbsp;
+      <button class="button is-danger is-small" @click="deleteComment(comment._id)">
         <span class="icon">
-          <i class="mdi mdi-24px mdi-delete"></i>
+          <i class="mdi mdi-18px mdi-delete" />
         </span>
       </button>
     </div>
