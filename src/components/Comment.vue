@@ -2,11 +2,9 @@
   <div class="box">
     <div class="is-5" style="margin: 0; padding-bottom: 0px;">
       {{ name }} &nbsp; {{ parseDate }} &nbsp;
-      <button class="button is-danger is-small" @click="deleteComment(comment._id)">
-        <span class="icon">
-          <i class="mdi mdi-18px mdi-delete" />
-        </span>
-      </button>
+      <span class="icon" @click="deleteComment(comment._id)">
+        <i class="mdi mdi-18px mdi-trash-can-outline" style="color: red" />
+      </span>
     </div>
     <div style="margin: 0; width:100%; padding-top: 0px; padding-bottom: 5px; color: black"><markdown :content="comment.content"></markdown></div>
   </div>

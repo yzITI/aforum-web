@@ -1,6 +1,6 @@
 <template>
   <div class="bar box m-0" v-if="route.path !== '/'">
-    <h1 class="title is-4 m-0">{{ route.name }}</h1>
+    <h1 class="title is-4 m-0" @click="router.push('/main')">{{ route.name }}</h1>
     <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车搜索内容'" onblur="this.placeholder = '搜索'" @keyup.enter="search" v-model="keyword">
   </div>
 </template>

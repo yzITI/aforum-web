@@ -21,7 +21,7 @@
     </button>
     <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" style="margin: 10px 20px"></comment-editor>
     <div class="comment ml-4 mr-4 mt-2" v-if="topic && commentList.length">
-      <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' ></comment>
+      <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
     </div>
   </div>
 </template>
