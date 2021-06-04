@@ -1,7 +1,7 @@
 <template>
-  <input class="input is-normal" placeholder="标题" v-model="title" style="height: 40px;">
-  <span class="icon" style="position: absolute; width: 40px; height: 40px; right: 0;" @click="modal = true">
-    <i class="mdi mdi-24px mdi-camera"></i>
+  <input class="input is-normal" placeholder="标题" v-model="title" style="height: 5vh;">
+  <span class="icon" style="position: absolute; width: 40px; height: 5vh; right: 0;" @click="modal = true">
+    <i class="mdi mdi-24px mdi-camera" />
   </span>
   <div class="modal" :class="{ 'is-active': modal }">
     <div class="modal-background" @click="modal = false"></div>
@@ -32,11 +32,11 @@
       </div>
     </div>
   </div>
-  <div style="height: 100%; width: 100%; margin: 0; padding: 0; display: inline-flex;">
+  <div class="m-0 p-0" style="height: 90vh; width: 100%; display: inline-flex;">
     <textarea label="输入框" rows="20" style="width: 50%; background-color: #EEEEEE; padding: 10px 20px; border: 0;" v-model="content"/>
     <markdown class="md-body" :content="content"></markdown>
   </div>
-  <button class="button is-primary" :class="{ 'is-loading': loading }" :disabled="!title" style="position: absolute; bottom: 10vh; right: 10vw; z-index: 100; border-radius: 1024px; width: 4rem; height: 4rem;" @click="publishdraft">
+  <button class="button is-primary" :class="{ 'is-loading': loading }" :disabled="!title" style="position: absolute; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 1024px; width: 4rem; height: 4rem;" @click="publishdraft">
     <span class="icon">
       <i class="mdi mdi-24px mdi-check"></i>
     </span>
@@ -50,7 +50,9 @@ import Publish from '../components/Publish.vue'
 import Template from '../template.js'
 import { topic, SS, draft } from '../plugins/state.js'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+
 ref: wide = false
 ref: content = Template
 ref: title = ''

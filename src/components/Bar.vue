@@ -4,6 +4,7 @@
     <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车搜索内容'" onblur="this.placeholder = '搜索'" @keyup.enter="search" v-model="keyword">
   </div>
 </template>
+
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { keyword } from '../plugins/state.js'
@@ -21,9 +22,6 @@ div.bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-h1 {
-  cursor: pointer;
 }
 input {
   width: 8rem;

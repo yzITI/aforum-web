@@ -70,7 +70,6 @@ watch(() => props.random, () => random(props.random))
 
 async function submit () {
   loading = true
-  console.log(setting.tag)
   draft.value = { ...draft.value, ...setting }
   const res = topic.value ? await putTopic() : await postTopic()
   if (res) {

@@ -1,6 +1,6 @@
 <template>
   <div class="list" v-if="list.length">
-    <list-item v-for='n in all' :key='n._id' :info='n'></list-item>
+    <list-item v-for="n in all" :key="n._id" :info="n" />
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import { list, keyword, result } from '../plugins/state.js'
 import ListItem from './ListItem.vue'
 import { computed } from 'vue'
+
 const all = computed(() => {
   const map = []
   const res = []

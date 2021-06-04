@@ -1,9 +1,9 @@
 <template>
   <div class="box pb-2 ml-4 mr-4">
-    <textarea class="textarea" v-model="comment" placeholder="添加回复"></textarea>
+    <textarea class="textarea" v-model="comment" placeholder="添加回复" />
     <label class="checkbox mr-2 mt-2 mb-2 is-4"><input class="mr-1" type="checkbox" v-model="anonymousComment">匿名评论</label>
-    <label>
-      <span class="icon mt-2" @click="uploadImage = true"><i class="mdi mdi-18px mdi-camera" /></span>
+    <label @click="uploadImage = true; file = null; imgStr = null">
+      <span class="icon mt-2" ><i class="mdi mdi-18px mdi-camera" /></span>
       <span class="mt-2 is-4">上传图片</span>
     </label>
     <div class="buttons">
@@ -25,19 +25,17 @@
         </label>
         <button class="button is-info ml-3" :class="{ 'is-loading': imgLoading }" @click="upload">上传</button>
       </div>
-      <div class="box" style="margin-top: 24px;" v-if="imgStr" @click="copy">
-        <p class="title is-5">点击复制</p>
-        <p class="title is-6">{{ imgStr }}</p>
-        <input type="hidden" id="imgStr" :value="imgStr" readonly>
+      <div class="box mt-5" v-if="imgStr" @click="copy">
+        <p class="title is-5 mb-2">点击复制</p>
+        <p class="is-6">{{ imgStr }}</p>
+        <input type="hidden" id="imgStr" :value="imgStr">
       </div>
     </div>
   </div>
   <div class="modal" :class="{ 'is-active': markdown }">
-    <div class="modal-background" @click="markdown = false"></div>
-    <div class="modal-content">
-      <div class="box">
-        <markdown :content="comment"></markdown>
-      </div>
+    <div class="modal-background" @click="markdown = false" />
+    <div class="modal-content box">
+      <markdown :content="comment" />
     </div>
   </div>
 </template>
@@ -47,6 +45,7 @@ import Markdown from './Markdown.vue'
 import { useRoute } from 'vue-router'
 import { SS, postComment, getComment } from '../plugins/state.js'
 const route = useRoute()
+
 ref: anonymousComment = false
 ref: comment = ''
 ref: markdown = false
@@ -87,7 +86,6 @@ async function upload () {
   try {
     const res = await axios.post('http://store.yzzx.org/upload', formData, { headers: { token: SS.id } })
     imgStr = '![](http://store.yzzx.org/file/' + res.data.hash + ')'
-    file = null
   } catch (err) {
     console.log(err)
   }

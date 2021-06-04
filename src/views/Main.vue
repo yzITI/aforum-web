@@ -1,8 +1,8 @@
 <template>
   <div class="mainclass">
-    <button class="button is-primary" style="position: fixed; bottom: 10vh; right: 10vw; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="router.push('/edit')">
+    <button class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="router.push('/edit')">
       <span class="icon">
-        <i class="mdi mdi-24px mdi-pencil"></i>
+        <i class="mdi mdi-24px mdi-pencil" />
       </span>
     </button>
     <list></list>

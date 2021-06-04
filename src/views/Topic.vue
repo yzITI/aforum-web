@@ -19,7 +19,7 @@
       {{ show ? '收起' : '添加回复' }}
       <span class="icon ml-1" :class="show ? 'mdi mdi-18px mdi-chevron-up' : 'mdi mdi-18px mdi-chevron-down'"></span>
     </button>
-    <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" style="margin: 10px 20px"></comment-editor>
+    <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" />
     <div class="comment ml-4 mr-4 mt-2" v-if="topic && commentList.length">
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
     </div>
@@ -34,6 +34,7 @@ import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
 import { SS, getTopic, getComment, topic, comments } from '../plugins/state.js'
+
 const route = useRoute(), router = useRouter
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 

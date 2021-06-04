@@ -1,14 +1,8 @@
 <template>
-  <div class="box p-1 m-1" @click="detail(info._id)" :style="cardStyle">
-    <div>
-      <h1 style="margin-top: 5px;" class="title is-4">{{ info.title }}</h1>
-    </div>
-    <div v-for="(tag, index) in info.tag" :key="index" style="margin: 5px 2px;">{{ tag }}</div>
-    <div style="margin: 2px;"></div>
-    <div no-gutters>
-      <div style="padding: 5px; color: #757575;">{{ info.publisher }}</div>
-      <div style="padding: 5px; color: #757575;">{{ parseDate(info.timestamp) }}</div>
-    </div>
+  <div class="box p-1 m-2" @click="detail(info._id)" :style="cardStyle">
+    <h1 class="subtitle m-2"><b>{{ info.title }}</b></h1>
+    <span v-for="(tag, index) in info.tag" :key="index" class="tag is-info is-light ml-2">{{ tag }}</span>
+    <p class="p-2" style="color: #757575;">{{ info.publisher }} &#8287; {{parseDate(info.timestamp) }}</p>
   </div>
 </template>
 
@@ -16,8 +10,7 @@
 import { computed, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
-const props = defineProps(['info'])
-const info = props.info
+const { info } = defineProps(['info'])
 const router = useRouter()
 
 const cardStyle = computed(() => {
@@ -33,28 +26,11 @@ const parseDate = (timestamp) => {
   const time = s[1].substr(0, 8)
   return date + ' ' + time
 }
+
 const detail = (id) => {
   router.push('/topic/' + id)
 }
 
 </script>
 
-<style scoped>
-  .card {
-    border-radius: 5px;
-    padding: 10px;
-    width: 100%;
-    margin: 1vh auto;
-    display: inline-block;
-    position: relative;
-    transition: all 0.5s ease;
-    background: white;
-  }
-  p.property {
-    font-size: 0.8rem;
-    margin: 10px 10px;
-  }
-  p.property strong {
-    font-size: 0.9rem;
-  }
-</style>
+<style scoped />
