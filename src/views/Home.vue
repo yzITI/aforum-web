@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img class="bg" src="bg.jpg" style="position: fixed; z-index: 0;">
+    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: 0;">
     <section class="banner full">
       <div id="bubble" style="background: white;" @click="login">
         <h2>江苏省扬州中学</h2>
