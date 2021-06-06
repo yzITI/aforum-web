@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img class="bg" src="bg.jpg" style="position: fixed; z-index: 0;">
+    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: 0;">
     <section class="banner full">
       <div id="bubble" style="background: white;" @click="login">
         <h2>江苏省扬州中学</h2>
@@ -9,10 +9,10 @@
       </div>
     </section>
     <section v-if="content" class="show full">
-      <markdown :content="content"></markdown>
+      <markdown :content="content" />
     </section>
     <section class="full">
-      <list></list>
+      <list />
     </section>
     <section style="height: 100vh;">
       <div @click="jump" style="position: absolute; z-index: 100" class="full"></div>

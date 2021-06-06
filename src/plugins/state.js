@@ -4,7 +4,7 @@ export const SS = window.sessionStorage
 export const token = () => ({ headers: { token: SS.token } })
 
 export function popError (err) {
-  window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')
+  Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')
   return false
 }
 
@@ -45,15 +45,16 @@ export const getComment = (id) => {
 export const deleteComment = (id) => {
   return axios.delete(`/api/comment/${id}`, token())
     .then(res => {
-      window.Swal.fire('成功', res.data, 'success')
-      comments.value = comments.value.filter(a => a._id !== payload)
+      Swal.fire('成功', res.data, 'success')
+      comments.value = comments.value.filter(a => a._id !== id)
     })
     .catch(popError)
 }
 export const postComment = (topic, draft) => {
   return axios.post(`/api/comment/${topic}`, draft, token())
-    .then(res => {
-      window.Swal.fire('成功', '', 'success')
+    .then(async res => {
+      Swal.fire('成功', '', 'success')
+      await getComment(topic)
     })
     .catch(popError)
 }
