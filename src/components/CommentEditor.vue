@@ -7,8 +7,8 @@
       <span class="mt-2 is-4">上传图片</span>
     </label>
     <div class="buttons">
-      <button class="button is-info is-small" @click="preview++" :disabled="!comment">预览</button>
-      <button class="button is-primary is-small" @click="post" :disabled="!comment">提交</button>
+      <button class="button is-info is-small" @click="preview++" :disabled="!comment.match(/\S/)">预览</button>
+      <button class="button is-primary is-small" @click="post" :disabled="!comment.match(/\S/)">提交</button>
     </div>
   </div>
   <file :random="showFile" />

@@ -1,7 +1,7 @@
 <template>
   <div class="bar box m-0" v-if="route.path !== '/'">
     <div style="display: flex;">
-      <span class="icon mr-3" @click="router.push('/main')">
+      <span class="icon mr-3" @click="home">
         <i class="mdi mdi-36px mdi-home"></i>
       </span>
       <h1 class="title is-4 m-0">{{ route.name }}</h1>
@@ -19,7 +19,10 @@
 import { useRouter, useRoute } from 'vue-router'
 import { keyword, searchContent, SS } from '../plugins/state.js'
 const route = useRoute(), router = useRouter()
-
+function home () {
+  if (SS.token) router.push('/main')
+  else router.push('/') 
+}
 </script>
 
 <style scoped>

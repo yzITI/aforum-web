@@ -18,11 +18,13 @@
       <hr>
       <markdown class="m-2" :content="topic.content"></markdown>
     </div>
-    <button class="button is-primary mb-2 ml-4" v-if="topic" @click="show = !show">
-      {{ show ? '收起' : '添加回复' }}
-      <span class="icon ml-1" :class="show ? 'mdi mdi-18px mdi-chevron-up' : 'mdi mdi-18px mdi-chevron-down'"></span>
-    </button>
-    <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" />
+    <div v-if="SS.token">
+      <button class="button is-primary mb-2 ml-4" v-if="topic" @click="show = !show">
+        {{ show ? '收起' : '添加回复' }}
+        <span class="icon ml-1" :class="show ? 'mdi mdi-18px mdi-chevron-up' : 'mdi mdi-18px mdi-chevron-down'"></span>
+      </button>
+      <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" />
+    </div>
     <div class="comment ml-4 mr-4 mt-2" v-if="topic && commentList.length">
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
     </div>
