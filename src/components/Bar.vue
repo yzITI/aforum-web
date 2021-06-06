@@ -1,18 +1,25 @@
 <template>
   <div class="bar box m-0" v-if="route.path !== '/'">
-    <h1 class="title is-4 m-0" @click="router.push('/main')">{{ route.name }}</h1>
-    <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车搜索内容'" onblur="this.placeholder = '搜索'" @keyup.enter="search" v-model="keyword">
+    <div style="display: flex;">
+      <span class="icon mr-3" @click="router.push('/main')">
+        <i class="mdi mdi-36px mdi-home"></i>
+      </span>
+      <h1 class="title is-4 m-0">{{ route.name }}</h1>
+    </div>
+    <div v-if="route.path === '/main'" style="display: flex; align-items: center;">
+      <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车搜索内容'" onblur="this.placeholder = '搜索'" v-model="keyword" @keyup.enter="searchContent">
+      <span class="icon ml-4" @click="router.push('/admin')">
+        <i class="mdi mdi-36px mdi-account-cog"></i>
+      </span>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { keyword } from '../plugins/state.js'
+import { keyword, searchContent } from '../plugins/state.js'
 const route = useRoute(), router = useRouter()
 
-function search () {
-  console.log(keyword.value)
-}
 </script>
 
 <style scoped>

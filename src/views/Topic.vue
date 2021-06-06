@@ -7,15 +7,18 @@
         <br>
         {{ topic.publisher }}
       </p>
-      <div class="buttons">
-        <h1 class="title m-0">{{ topic.title }}</h1>
-        <button class="button is-info is-small ml-2" v-if="isAdmin || isPublisher" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
-        <button class="button is-danger is-small" v-if="(isAdmin || isPublisher) && !(topic._id.indexOf('HOME') === 0)" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
-      </div>
+      <h1 class="title m-0 mt-2 is-2">
+        {{ topic.title }}
+        <div class="buttons is-inline-block">
+          <button class="button is-info is-small ml-2 is-light" v-if="isAdmin || isPublisher" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
+          <button class="button is-danger is-small is-light" v-if="(isAdmin || isPublisher) && !(topic._id.indexOf('HOME') === 0)" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
+        </div>
+      </h1>
       <span v-for="(tag, index) in topic.tag" :key="index" class="tag is-info is-light" style="margin: 5px 2px;">{{ tag }}</span>
-      <markdown :content="topic.content"></markdown>
+      <hr>
+      <markdown class="m-2" :content="topic.content"></markdown>
     </div>
-    <button class="button is-normal mb-2 ml-4" v-if="topic" @click="show = !show">
+    <button class="button is-primary mb-2 ml-4" v-if="topic" @click="show = !show">
       {{ show ? '收起' : '添加回复' }}
       <span class="icon ml-1" :class="show ? 'mdi mdi-18px mdi-chevron-up' : 'mdi mdi-18px mdi-chevron-down'"></span>
     </button>

@@ -1,15 +1,19 @@
 <template>
   <div class="admin pt-4">
-    <loading :loading="loading" />
     <div class="box m-4" v-for="u in users">
       <h1 class="title is-4 m-0">
         {{ u.name }}
-        <span class="icon m-1" @click="deleteUser(u)">
-          <i class="mdi mdi-24px mdi-trash-can-outline" style="color: red" />
+        <span class="icon m-1" @click="disable(u)" style="cursor: pointer;">
+          <i class="mdi mdi-24px mdi-account-cancel" :style="u.enable ? 'color: grey' : 'color: red'"/>
+        </span>
+        <span class="icon m-1" @click="able(u)" style="cursor: pointer;">
+          <i class="mdi mdi-24px mdi-account-check" :style="u.enable ? 'color: #4F97D6' : 'color: grey'"/>
+        </span>
+        <span class="icon m-1" @click="deleteUser(u)" style="cursor: pointer;">
+          <i class="mdi mdi-24px mdi-trash-can-outline" style="color: red;" />
         </span>
       </h1>
       <p class="is-5">{{ u.role }} &nbsp; <code>{{ u.group }}</code></p>
-      <v-switch v-model="u.enable" @change="putUser(u)"></v-switch>
     </div>
   </div>
 </template>
@@ -19,6 +23,18 @@ import { token } from '../plugins/state.js'
 ref: users = []
 ref: loading = true
 getUser()
+
+function able (u) {
+  if (u.enable == true) return
+  u.enable = true
+  putUser(u)
+}
+
+function disable (u) {
+  if (u.enable == false) return
+  u.enable = false
+  putUser(u)
+}
 
 async function getUser () {
   loading = true
@@ -33,7 +49,7 @@ async function getUser () {
 
 async function putUser (u) {
   loading = true
-  await axios.put('/api/user/' + u._id, { enable: u.enable }, opt)
+  await axios.put('/api/user/' + u._id, { enable: u.enable }, token())
     .then(res => { window.Swal.fire('成功', res.data, 'success') })
     .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
   loading = false
@@ -51,7 +67,7 @@ async function deleteUser (u) {
   })
   if (!r.isConfirmed) return
 
-  await axios.delete('/api/user/' + u._id, opt)
+  await axios.delete('/api/user/' + u._id, token())
     .then(res => { window.Swal.fire('成功', res.data, 'success') })
     .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
   getUser()

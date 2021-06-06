@@ -1,40 +1,18 @@
 <template>
   <input class="input is-normal" placeholder="标题" v-model="title" style="height: 5vh;">
-  <span class="icon" style="position: absolute; width: 40px; height: 5vh; right: 0;" @click="modal = true">
+  <span class="icon" v-if="!wide" style="position: absolute; width: 40px; height: 5vh; right: 32px;" @click="preview++">
+    <i class="mdi mdi-24px mdi-text-box-search" />
+  </span>
+  <span class="icon" style="position: absolute; width: 40px; height: 5vh; right: 0;" @click="showFile++">
     <i class="mdi mdi-24px mdi-camera" />
   </span>
-  <div class="modal" :class="{ 'is-active': modal }">
-    <div class="modal-background" @click="modal = false"></div>
-    <div class="modal-content">
-      <div class="box">
-        <div class="file has-name">
-          <label class="file-label">
-            <input class="file-input" type="file" @change="uploadfile">
-            <span class="file-cta">
-              <span class="file-icon">
-                <i class="fas fa-upload"></i>
-              </span>
-              <span class="file-label">
-                Choose a file…
-              </span>
-            </span>
-            <span class="file-name">
-              {{ file && file.name }}
-            </span>
-          </label>
-          <button class="button is-info" :class="{ 'is-loading': imgLoading }" @click="upload" style="margin-left: 8px;">上传</button>
-        </div>
-        <div class="box" style="margin-top: 24px;" v-if="imgStr" @click="copy">
-          <p class="title is-5">点击复制</p>
-          <p class="title is-6">{{ imgStr }}</p>
-          <input type="hidden" id="imgStr" :value="imgStr">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="m-0 p-0" style="height: 90vh; width: 100%; display: inline-flex;">
+  <file :random="showFile" />
+  <div v-if="wide" class="m-0 p-0" style="height: 90vh; width: 100%; display: inline-flex;">
     <textarea label="输入框" rows="20" style="width: 50%; background-color: #EEEEEE; padding: 10px 20px; border: 0;" v-model="content"/>
     <markdown class="md-body" :content="content"></markdown>
+  </div>
+  <div v-else>
+    <textarea label="输入框" rows="20" style="width: 100%; background-color: #EEEEEE; padding: 10px 20px; border: 0; min-height: 90vh" v-model="content"/>
   </div>
   <button class="button is-primary" :class="{ 'is-loading': loading }" :disabled="!title" style="position: absolute; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 1024px; width: 4rem; height: 4rem;" @click="publishdraft">
     <span class="icon">
@@ -42,26 +20,27 @@
     </span>
   </button>
   <publish :random="showSetting" style="z-index: 101;"/>
+  <preview :random="preview" :content="content" />
 </template>
 
 <script setup>
 import Markdown from '../components/Markdown.vue'
 import Publish from '../components/Publish.vue'
 import Template from '../template.js'
+import Preview from '../components/Preview.vue'
+import File from '../components/File.vue'
 import { topic, SS, draft } from '../plugins/state.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-ref: wide = false
 ref: content = Template
 ref: title = ''
 ref: loading = false
-ref: modal = false
-ref: file = null
-ref: imgStr = ''
-ref: imgLoading = false
 ref: showSetting = 0
+ref: preview = 0
+ref: showFile = 0
+const wide = window.innerWidth > 450
 
 if (!SS.token) router.push('/')
 if (topic.value) {

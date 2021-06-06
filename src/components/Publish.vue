@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ 'is-active': modal }">
+  <div class="modal is-active" v-if="modal">
     <div class="modal-background" @click="modal = false"></div>
     <div class="modal-content" style="width: 70%;">
       <div class="box">
@@ -52,7 +52,7 @@ function add () {
 }
 
 function random (v) {
-  modal = Boolean(v)
+  modal = v
   loading = false
   if (topic.value) {
     setting = {
