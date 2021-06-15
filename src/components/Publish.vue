@@ -13,7 +13,7 @@
         </template>
         <label class="checkbox"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
         <div class="buttons mt-2">
-          <button v-if="isAdmin && topic && !draft" class="button is-info is-small" @click="router.push('/edit')">修改内容</button>
+          <button v-if="isAdmin && topic && route.path !== '/edit'" class="button is-info is-small" @click="router.push('/edit');">修改内容</button>
           <button class="button is-primary is-small" :class="{ 'is-loading': loading }" @click="submit">发布</button>
         </div>
       </div>
@@ -23,10 +23,10 @@
 
 <script setup>
 import { defineProps, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { topic, draft, SS, postTopic, putTopic } from '../plugins/state.js'
 const props = defineProps(['random'])
-const router = useRouter()
+const route = useRoute(), router = useRouter()
 
 ref: loading = false
 ref: modal = false
@@ -81,5 +81,6 @@ async function submit () {
       })
   }
   loading = false
+  draft.value = { title: '', content: '' }
 }
 </script>

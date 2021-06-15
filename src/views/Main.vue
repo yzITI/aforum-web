@@ -1,6 +1,6 @@
 <template>
   <div class="mainclass">
-    <button class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="router.push('/edit')">
+    <button class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="router.push('/edit'); topic = null">
       <span class="icon">
         <i class="mdi mdi-24px mdi-pencil" />
       </span>
@@ -13,7 +13,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import List from '../components/List.vue'
-import { getList } from '../plugins/state.js'
+import { getList, topic } from '../plugins/state.js'
 const router = useRouter()
 getList()
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <input class="input is-normal" placeholder="标题" v-model="title" style="height: 5vh;">
+  <input class="input is-normal" placeholder="标题" v-model="draft.title" style="height: 5vh;">
   <span class="icon" v-if="!wide" style="position: absolute; width: 40px; height: 5vh; right: 32px;" @click="preview++">
     <i class="mdi mdi-24px mdi-text-box-search" />
   </span>
@@ -8,19 +8,19 @@
   </span>
   <file :random="showFile" />
   <div v-if="wide" class="m-0 p-0" style="height: 90vh; width: 100%; display: inline-flex;">
-    <textarea label="输入框" rows="20" style="width: 50%; background-color: #EEEEEE; padding: 10px 20px; border: 0;" v-model="content"/>
-    <markdown class="md-body" :content="content"></markdown>
+    <textarea label="输入框" rows="20" style="width: 50%; background-color: #EEEEEE; padding: 10px 20px; border: 0;" v-model="draft.content"/>
+    <markdown class="md-body" :content="draft.content"></markdown>
   </div>
   <div v-else>
-    <textarea label="输入框" rows="20" style="width: 100%; background-color: #EEEEEE; padding: 10px 20px; border: 0; min-height: 90vh" v-model="content"/>
+    <textarea label="输入框" rows="20" style="width: 100%; background-color: #EEEEEE; padding: 10px 20px; border: 0; min-height: 90vh" v-model="draft.content"/>
   </div>
-  <button class="button is-primary" :class="{ 'is-loading': loading }" :disabled="!title" style="position: absolute; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 1024px; width: 4rem; height: 4rem;" @click="publishdraft">
+  <button class="button is-primary" :class="{ 'is-loading': loading }" :disabled="!draft.title" style="position: absolute; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 1024px; width: 4rem; height: 4rem;" @click="publishdraft">
     <span class="icon">
       <i class="mdi mdi-24px mdi-check"></i>
     </span>
   </button>
   <publish :random="showSetting" style="z-index: 101;"/>
-  <preview :random="preview" :content="content" />
+  <preview :random="preview" :content="draft.content" />
 </template>
 
 <script setup>
@@ -34,20 +34,18 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-ref: content = Template
-ref: title = ''
 ref: loading = false
 ref: showSetting = 0
 ref: preview = 0
 ref: showFile = 0
 const wide = window.innerWidth > 450
 
+if (!draft.value.content) draft.value = { title: '', content: Template }
+
 if (!SS.token) router.push('/')
 if (topic.value) {
-  title = topic.value.title
-  content = topic.value.content
+  draft.value = topic.value
 }
-draft.value = null
 
 function uploadfile (f) {
   const files = f.target.files || f.dataTransfer.files
@@ -87,7 +85,6 @@ async function upload () {
 }
 
 function publishdraft () {
-  draft.value = { title, content }
   showSetting++
 }
 

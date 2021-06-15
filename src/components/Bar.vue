@@ -17,10 +17,13 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { keyword, searchContent, SS } from '../plugins/state.js'
+import { keyword, searchContent, SS, topic, draft } from '../plugins/state.js'
 const route = useRoute(), router = useRouter()
 function home () {
-  if (SS.token) router.push('/main')
+  if (SS.token) {
+    if (topic.value) draft.value = { title: '', content: '' }
+    router.push('/main')
+  }
   else router.push('/') 
 }
 </script>

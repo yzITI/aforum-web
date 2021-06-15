@@ -10,7 +10,7 @@ export function popError (err) {
 
 export const list = ref([])
 export const topic = ref(null)
-export const draft = ref(null)
+export const draft = ref({ title: '', content: '' })
 export const comments = ref([])
 export const result = ref([])
 export const keyword = ref('')
