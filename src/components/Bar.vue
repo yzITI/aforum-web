@@ -31,7 +31,7 @@ function home () {
 <style scoped>
 div.bar {
   border-radius: 0 0 8px 8px;
-  height: 56px;
+  height: 5vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
