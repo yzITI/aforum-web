@@ -11,7 +11,6 @@
           <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.restrict">评论互不可见</label>
           <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
         </template>
-        <label class="checkbox"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
         <div class="buttons mt-2">
           <button v-if="isAdmin && topic && route.path !== '/edit'" class="button is-info is-small" @click="router.push('/edit');">修改内容</button>
           <button class="button is-primary is-small" :class="{ 'is-loading': loading }" @click="submit">发布</button>
