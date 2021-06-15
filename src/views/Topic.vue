@@ -40,7 +40,7 @@ import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
 import { SS, getTopic, getComment, topic, comments } from '../plugins/state.js'
 
-const route = useRoute(), router = useRouter
+const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
