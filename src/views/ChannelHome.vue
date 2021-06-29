@@ -10,10 +10,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import List from '../components/List.vue'
-import { getList, topic } from '../plugins/state.js'
+import { getList } from '../plugins/state.js'
 const router = useRouter()
 getList()
 </script>

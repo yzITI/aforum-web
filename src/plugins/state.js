@@ -8,6 +8,8 @@ export function popError (err) {
   return false
 }
 
+export const channel = ref('')
+export const chanList = ref([])
 export const list = ref([])
 export const topic = ref(null)
 export const draft = ref({ title: '', content: '' })
@@ -15,8 +17,14 @@ export const comments = ref([])
 export const result = ref([])
 export const keyword = ref('')
 
-export const getList = (onlyPublic) => {
-  return axios.get('/api/topic', onlyPublic ? {} : token())
+export const getChannel = () => {
+  return axios.get('/api', SS.token ? {}: token())
+    .then(res => chanList.value = res.data)
+    .catch(popError)
+}
+
+export const getList = () => {
+  return axios.get(`api/${channel.value}`, SS.token ? {} : token())
     .then(res => { list.value = res.data })
     .catch(popError)
 }

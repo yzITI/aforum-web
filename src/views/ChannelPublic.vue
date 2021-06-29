@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: 0;">
+  <div>
+    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: -1;">
     <section class="banner full">
       <div id="bubble" style="background: white;" @click="login">
         <h2>江苏省扬州中学</h2>
@@ -26,6 +26,7 @@ import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
 import { topic, comments, keyword, getList, SS } from '../plugins/state.js'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
 ref: content = ''
 
@@ -50,9 +51,6 @@ function jump () {
 </script>
 
 <style scoped>
-.home {
-  background-color: #111;
-}
 .full {
   min-height: 100vh;
   width: 100%;
@@ -101,7 +99,7 @@ section {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 0;
+  z-index: -1;
 }
 h1 {
   text-align: center;
