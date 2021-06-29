@@ -20,7 +20,8 @@ import Markdown from './Markdown.vue'
 import File from './File.vue'
 import Preview from './Preview.vue'
 import { useRoute } from 'vue-router'
-import { SS, postComment, getComment } from '../plugins/state.js'
+import { SS } from '../plugins/state.js'
+import { postComment, getComment } from '../plugins/action.js'
 const route = useRoute()
 
 ref: anonymousComment = false

@@ -38,7 +38,8 @@ import Markdown from '../components/Markdown.vue'
 import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
-import { SS, getTopic, getComment, topic, comments } from '../plugins/state.js'
+import { SS, topic, comments } from '../plugins/state.js'
+import { getTopic, getComment } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000

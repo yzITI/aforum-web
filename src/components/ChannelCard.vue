@@ -1,5 +1,5 @@
 <template>
-  <div class="box p-1 m-2" @click="detail(info._id)" style="width: 320px; height: 200px;  position: relative; z-index: 1;">
+  <div class="box p-1 m-2" @click="detail()" style="width: 320px; height: 200px;  position: relative; z-index: 1;">
     <div :style="style" class="bg"/>
     <h1 class="title m-2"><b>{{ info.name }}</b></h1>
   </div>
@@ -14,11 +14,11 @@ const { info } = defineProps(['info'])
 const router = useRouter()
 
 const style = {
-  background: `url(${info.bg}) center center`
+  background: `url(${info.bg? info.bg: '/bg.jpg'}) center center`
 }
-const detail = (id) => {
-  channel.value = id
-  router.push('/channel/' + id)
+const detail = () => {
+  channel.value = info
+  router.push('/channel/' + info.id)
 }
 
 </script>

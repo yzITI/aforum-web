@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { token } from '../plugins/state.js'
+import { token } from '../plugins/action.js'
 ref: users = []
 ref: loading = true
 getUser()

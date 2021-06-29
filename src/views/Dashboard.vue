@@ -1,15 +1,18 @@
 <template>
   <div class="p-4 m-4" style="display: flex; flex-wrap: wrap; justify-content: center;">
-    <channel-card v-for="c in data" :key="c._id" :info="c"/>
+    <channel-card v-for="c in channel" :key="c._id" :info="c" />
   </div>
 </template>
 
 <script setup>
 import ChannelCard from '../components/ChannelCard.vue'
-import { SS, token } from '../plugins/state.js'
+import { token, popError } from '../plugins/action.js'
 
-const { data } = await axios.get('/api', SS.token ? {}: token())
-console.log(data)
+ref: channel = []
+axios.get('/api', token())
+  .then(res => { channel = res.data})
+  .catch(popError)
+
 </script>
 
 <style scoped>

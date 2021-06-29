@@ -4,7 +4,7 @@
     <section class="banner full">
       <div id="bubble" style="background: white;" @click="login">
         <h2>江苏省扬州中学</h2>
-        <h1>数学在线讨论</h1>
+        <h1>{{ channel.name }}</h1>
         <p>点击进入</p>
       </div>
     </section>
@@ -24,20 +24,20 @@
 <script setup>
 import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
-import { topic, comments, keyword, getList, SS } from '../plugins/state.js'
+
 import { useRouter } from 'vue-router'
+import { topic, comments, keyword, SS } from '../plugins/state.js'
+import { getList } from '../plugins/action.js'
 
 const router = useRouter()
 ref: content = ''
 
-getList(true)
+getList()
+content = ''
 topic.value = null
 comments.value = []
 keyword.value = ''
 
-axios.get('/api/topic/HOME')
-  .then(res => { content = res.data.content })
-  .catch(console.log)
 
 function login () {
   if (SS.token) router.push('/main')

@@ -23,7 +23,9 @@
 <script setup>
 import { defineProps, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { topic, draft, SS, postTopic, putTopic } from '../plugins/state.js'
+import { topic, draft, SS } from '../plugins/state.js'
+import { postTopic, putTopic } from '../plugins/action.js'
+
 const props = defineProps(['random'])
 const route = useRoute(), router = useRouter()
 

@@ -14,7 +14,8 @@
 import Markdown from './Markdown.vue'
 import { computed, defineProps } from 'vue'
 import { useRoute } from 'vue-router'
-import { SS, deleteComment } from '../plugins/state.js'
+import { SS } from '../plugins/state.js'
+import { deleteComment } from '../plugins/action.js'
 
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const props = defineProps(['comment'])

@@ -12,7 +12,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import List from '../components/List.vue'
-import { getList } from '../plugins/state.js'
+import { getList } from '../plugins/action.js'
 const router = useRouter()
 getList()
 </script>
