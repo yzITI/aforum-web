@@ -26,7 +26,7 @@ import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
 
 import { useRouter } from 'vue-router'
-import { topic, comments, keyword, SS } from '../plugins/state.js'
+import { topic, keyword, SS, channel } from '../plugins/state.js'
 import { getList } from '../plugins/action.js'
 
 const router = useRouter()
@@ -35,12 +35,10 @@ ref: content = ''
 getList()
 content = ''
 topic.value = null
-comments.value = []
 keyword.value = ''
 
-
 function login () {
-  if (SS.token) router.push('/main')
+  if (SS.token) router.push('/home/' + channel.value._id)
   else window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 

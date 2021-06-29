@@ -10,7 +10,7 @@ import { token, popError } from '../plugins/action.js'
 
 ref: channel = []
 axios.get('/api', token())
-  .then(res => { channel = res.data})
+  .then(res => { channel = res.data })
   .catch(popError)
 
 </script>

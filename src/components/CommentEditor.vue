@@ -21,7 +21,7 @@ import File from './File.vue'
 import Preview from './Preview.vue'
 import { useRoute } from 'vue-router'
 import { SS } from '../plugins/state.js'
-import { postComment, getComment } from '../plugins/action.js'
+import { postComment } from '../plugins/action.js'
 const route = useRoute()
 
 ref: anonymousComment = false
@@ -70,7 +70,6 @@ async function upload () {
 function post () {
   loading = true
   postComment(route.params.id, { content: comment, anonymous: anonymousComment })
-  getComment(route.params.id)
   comment = ''
   loading = false
 }

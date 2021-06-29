@@ -1,4 +1,4 @@
-import { SS, channel, list, topic, draft, comments, result, keyword } from './state'
+import { SS, channel, list, topic, draft, result, keyword } from './state.js'
 
 export const token = () => ({ headers: { token: SS.token } })
 
@@ -14,32 +14,26 @@ export const getList = () => {
 }
 
 export const getTopic = (id) => {
-  return axios.get(`api/topic/${id}`, token())
+  return axios.get(`api/${channel.value._id}/${id}?timestamp=${Date.now()}`, token())
     .then(res => { topic.value = res.data })
     .catch(popError)
 }
 
 export const postTopic = () => {
   if (!draft.value) return false
-  return axios.post('api/topic', draft.value, token())
+  return axios.post(`api/${channel.value._id}`, draft.value, token())
     .then(() => true)
     .catch(popError)
 }
 export const putTopic = () => {
   if (!draft.value || !topic.value) return false
-  return axios.put('api/topic/' + topic.value._id, draft.value, token())
+  return axios.put(`api/${channel.value._id}/${topic.value._id}`, draft.value, token())
     .then(() => true)
     .catch(popError)
 }
 
-export const getComment = (id) => {
-  return axios.get(`/api/comment/${id}`, token())
-    .then(res => { comments.value = res.data })
-    .catch(popError)
-}
-
 export const deleteComment = (id) => {
-  return axios.delete(`/api/comment/${id}`, token())
+  return axios.delete(`/api/${topic.value._id}/${id}`, token())
     .then(res => {
       Swal.fire('成功', res.data, 'success')
       comments.value = comments.value.filter(a => a._id !== id)
@@ -48,10 +42,11 @@ export const deleteComment = (id) => {
 }
 
 export const postComment = (topic, draft) => {
-  return axios.post(`/api/comment/${topic}`, draft, token())
+  console.log(channel.value)
+  return axios.post(`/api/${channel.value._id}/${topic}`, draft, token())
     .then(async res => {
       Swal.fire('成功', '', 'success')
-      await getComment(topic)
+      topic.value.comments.push(draft)
     })
     .catch(popError)
 }

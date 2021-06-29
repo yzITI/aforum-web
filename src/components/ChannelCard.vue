@@ -18,7 +18,7 @@ const style = {
 }
 const detail = () => {
   channel.value = info
-  router.push('/channel/' + info.id)
+  router.push('/channel/' + info._id)
 }
 
 </script>
