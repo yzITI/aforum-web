@@ -1,5 +1,6 @@
 <template>
   <div class="p-4 m-4" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <p v-if="loading">正在加载频道资源...</p>
     <channel-card v-for="c in channel" :key="c._id" :info="c" />
   </div>
 </template>
@@ -9,8 +10,9 @@ import ChannelCard from '../components/ChannelCard.vue'
 import { token, popError } from '../plugins/action.js'
 
 ref: channel = []
+ref: loading = true
 axios.get('/api', token())
-  .then(res => { channel = res.data })
+  .then(res => { channel = res.data, loading = false })
   .catch(popError)
 
 </script>

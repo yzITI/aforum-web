@@ -7,6 +7,10 @@ export function popError (err) {
   return false
 }
 
+export const idGen = (l = 10) =>  
+  window.crypto.getRandomValues(new Uint32Array(l)).toString('base64').replace(/\//g, '_').replace(/\+/g, '-').substr(2, 20)
+
+
 export const getList = () => {
   return axios.get(`api/${channel.value._id}?timestamp=${Date.now()}`, token())
     .then(res => { list.value = res.data })
@@ -21,9 +25,11 @@ export const getTopic = (id) => {
 
 export const postTopic = () => {
   if (!draft.value) return false
-  return axios.post(`api/${channel.value._id}`, draft.value, token())
-    .then(() => true)
-    .catch(popError)
+  const id = idGen()
+  console.log(id)
+  // return axios.post(`api/${channel.value._id}/${idGen()}`, draft.value, token())
+  //   .then(() => true)
+  //   .catch(popError)
 }
 export const putTopic = () => {
   if (!draft.value || !topic.value) return false
