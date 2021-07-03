@@ -3,7 +3,7 @@
     <div class="modal-background" @click="modal = false"></div>
     <div class="modal-content" style="width: 70%;">
       <div class="box">
-        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag">{{ t }}</span>
+        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag" :key="t">{{ t }}</span>
         <input class="input mb-2 mt-2" v-model="tag" @keydown.enter="add" placeholder="输入标签，回车添加">
         <template v-if="isAdmin">
           <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.pin">置顶讨论</label>

@@ -8,7 +8,6 @@ const routes = [
   },
   {
     path: '/home/:id',
-    name: '主页',
     component: () => import('./views/ChannelHome.vue')
   },
   {

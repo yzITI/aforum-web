@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1 style="margin-bottom: 50px; font-size: 3rem;">数学在线讨论</h1>
+    <h1 style="margin-bottom: 50px; font-size: 3rem;">{{ SS.channel }}</h1>
     <h2>{{ notice }}</h2>
   </div>
 </template>
@@ -16,14 +16,13 @@ if (!code) {
   setTimeout(() => { router.push('/') }, 3000)
 }
 
-axios.post('/api/user', { code })
+axios.post(`/api/`, { code })
   .then(resp => {
-    const s = resp.data.split('.')
-    SS.token = resp.data
-    SS.id = s[1]
-    SS.role = s[2]
+    SS.token = resp.data.token
+    SS.id = resp.data.id
+    SS.role = resp.data.role
     notice = '登录成功，正在跳转...'
-    setTimeout(() => { router.push('/main') }, 1000)
+    setTimeout(() => { router.push(`/home/${SS.channel}`) }, 1000)
   })
   .catch(err => {
     notice = err.response ? err.response.data : '网络错误'
