@@ -87,7 +87,7 @@ async function remove () {
   if (!r.isConfirmed) return
 
   loading = true
-  await axios.delete('/api/topic/' + route.params.id, { headers: { token: SS.token } })
+  await axios.delete(`/api/${SS.channel}/${route.params.id}`, { headers: { token: SS.token } })
     .then(res => {
       Swal.fire('成功', res.data, 'success')
         .then(() => { router.push('/main') })
