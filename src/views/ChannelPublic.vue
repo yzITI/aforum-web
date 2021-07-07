@@ -43,7 +43,7 @@ topic.value = null
 keyword.value = ''
 
 function login () {
-  if (SS.token) router.push('/home/' + channel.value._id)
+  if (SS.token) router.push('/home/' + SS.channel)
   else window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 
