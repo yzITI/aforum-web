@@ -1,15 +1,20 @@
 <template>
-  <div class="bar box m-0" v-if="route.path !== '/'">
+  <div class="bar box m-0">
     <div style="display: flex;">
-      <span class="icon mr-3" @click="home">
-        <i class="mdi mdi-36px mdi-home"></i>
+      <span class="icon mr-3" @click="router.push('/') ">
+        <i class="mdi mdi-36px mdi-home" />
       </span>
-      <h1 class="title is-4 m-0">{{ route.name }}</h1>
+      <h1 class="title is-4 m-0">{{ route.name ? route.name: channel.name }}</h1>
     </div>
-    <div v-if="route.path === '/main'" style="display: flex; align-items: center;">
+    <div v-if="route.path === '/' && !SS.token" style="display: flex; align-items: center;">
+      <span class="icon ml-4" @click="login">
+        <i class="mdi mdi-36px mdi-login" />
+      </span>
+    </div>
+    <div v-if="route.path.includes('/channel')" style="display: flex; align-items: center;">
       <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车搜索内容'" onblur="this.placeholder = '搜索'" v-model="keyword" @keyup.enter="searchContent">
       <span class="icon ml-4" v-if="SS.role == 'ADMIN'" @click="router.push('/admin')">
-        <i class="mdi mdi-36px mdi-account-cog"></i>
+        <i class="mdi mdi-36px mdi-account-cog" />
       </span>
     </div>
   </div>
@@ -17,21 +22,19 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { keyword, searchContent, SS, topic, draft } from '../plugins/state.js'
+import { keyword, SS, topic, draft, channel } from '../plugins/state.js'
+import { searchContent } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
-function home () {
-  if (SS.token) {
-    if (topic.value) draft.value = { title: '', content: '' }
-    router.push('/main')
-  }
-  else router.push('/') 
+
+function login () {
+  if (!SS.token) window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 </script>
 
 <style scoped>
 div.bar {
   border-radius: 0 0 8px 8px;
-  height: 5vh;
+  height: 7vh;
   display: flex;
   align-items: center;
   justify-content: space-between;

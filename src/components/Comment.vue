@@ -14,10 +14,11 @@
 import Markdown from './Markdown.vue'
 import { computed, defineProps } from 'vue'
 import { useRoute } from 'vue-router'
-import { SS, deleteComment } from '../plugins/state.js'
+import { SS } from '../plugins/state.js'
+import { deleteComment } from '../plugins/action.js'
 
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
-const props = defineProps(['comment'])
+const { comment } = defineProps(['comment'])
 const route = useRoute()
 
 ref: isAdmin = SS.role === 'ADMIN'
@@ -25,9 +26,9 @@ ref: isPublisher = false
 
 if (route.params.id.indexOf(SS.id) === 0) isPublisher = true
 
-const name = computed(() => props.comment.anonymous ? '匿名' : props.comment.publisher)
+const name = computed(() => comment.anonymous ? '匿名' : comment.author)
 const parseDate = computed(() => {
-  const timestamp = props.comment.timestamp
+  const timestamp = comment.timestamp
   if (!timestamp || typeof (timestamp) === 'undefined') return
   const s = new Date(timestamp - tzoffset).toISOString().split('T')
   const date = s[0]

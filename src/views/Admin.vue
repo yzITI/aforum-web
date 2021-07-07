@@ -2,24 +2,25 @@
   <div class="admin pt-4">
     <div class="box m-4" v-for="u in users">
       <h1 class="title is-4 m-0">
-        {{ u.name }}
+        {{ u[0] }}
         <span class="icon m-1" @click="disable(u)" style="cursor: pointer;">
-          <i class="mdi mdi-24px mdi-account-cancel" :style="u.enable ? 'color: grey' : 'color: red'"/>
+          <i class="mdi mdi-24px mdi-account-cancel" :style="u[3] ? 'color: grey' : 'color: red'"/>
         </span>
         <span class="icon m-1" @click="able(u)" style="cursor: pointer;">
-          <i class="mdi mdi-24px mdi-account-check" :style="u.enable ? 'color: #4F97D6' : 'color: grey'"/>
+          <i class="mdi mdi-24px mdi-account-check" :style="u[3] ? 'color: #4F97D6' : 'color: grey'"/>
         </span>
         <span class="icon m-1" @click="deleteUser(u)" style="cursor: pointer;">
           <i class="mdi mdi-24px mdi-trash-can-outline" style="color: red;" />
         </span>
       </h1>
-      <p class="is-5">{{ u.role }} &nbsp; <code>{{ u.group }}</code></p>
+      <p class="is-5">{{ u[2] }} &nbsp; <code>{{ u[1] }}</code></p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { token } from '../plugins/state.js'
+import { token } from '../plugins/action.js'
+import { SS } from '../plugins/state.js'
 ref: users = []
 ref: loading = true
 getUser()
@@ -38,18 +39,21 @@ function disable (u) {
 
 async function getUser () {
   loading = true
-  await axios.get('/api/user', token())
+  await axios.get(`/api/${SS.channel}/user`, token())
     .then(res => {
       users = res.data
-      users.sort((a, b) => b.enable && !a.enable)
+      users = users.sort((a, b) => a[3] && !b[3])
     })
-    .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
+    .catch(err => { 
+      Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')
+      console.error(err)
+    })
   loading = false
 }
 
 async function putUser (u) {
   loading = true
-  await axios.put('/api/user/' + u._id, { enable: u.enable }, token())
+  await axios.put(`/api/${SS.channel}`, { u }, token())
     .then(res => { window.Swal.fire('成功', res.data, 'success') })
     .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
   loading = false

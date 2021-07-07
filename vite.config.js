@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': 'http://math.yzzx.org/',
+      // '/api': 'http://localhost:3001/',
       '/upload': {
         target: 'http://store.yzzx.org/',
         ws: true,

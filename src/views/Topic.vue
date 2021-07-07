@@ -38,7 +38,8 @@ import Markdown from '../components/Markdown.vue'
 import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
-import { SS, getTopic, getComment, topic, comments } from '../plugins/state.js'
+import { SS, topic } from '../plugins/state.js'
+import { getTopic } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
@@ -54,12 +55,11 @@ ref: result = []
 
 if (route.params.id.indexOf(SS.id) === 0) isPublisher = true
 getTopic(route.params.id)
-getComment(route.params.id)
 
 const commentList = computed(() => {
-  if (!keyword.value) return comments.value
+  if (!keyword.value) return topic.value.comments
   const reg = new RegExp(keyword.value, 'i')
-  return comments.value.filter(x => reg.test(x.content) || reg.test(x.publisher))
+  return topic.value.comments.filter(x => reg.test(x.content) || reg.test(x.publisher))
 })
 
 function parseDate (timestamp) {
@@ -87,7 +87,7 @@ async function remove () {
   if (!r.isConfirmed) return
 
   loading = true
-  await axios.delete('/api/topic/' + route.params.id, { headers: { token: SS.token } })
+  await axios.delete(`/api/${SS.channel}/${route.params.id}`, { headers: { token: SS.token } })
     .then(res => {
       Swal.fire('成功', res.data, 'success')
         .then(() => { router.push('/main') })

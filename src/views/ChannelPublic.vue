@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
-    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: 0;">
+  <div>
+    <img class="bg" src="/bg.jpg" style="position: fixed; z-index: -1;">
     <section class="banner full">
       <div id="bubble" style="background: white;" @click="login">
         <h2>江苏省扬州中学</h2>
-        <h1>数学在线讨论</h1>
+        <h1>{{ channel.name }}</h1>
         <p>点击进入</p>
       </div>
     </section>
@@ -24,22 +24,26 @@
 <script setup>
 import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
-import { topic, comments, keyword, getList, SS } from '../plugins/state.js'
+
 import { useRouter } from 'vue-router'
+import { topic, keyword, SS, channel } from '../plugins/state.js'
+import { getList } from '../plugins/action.js'
+
 const router = useRouter()
 ref: content = ''
 
-getList(true)
+if (!SS.channel || !Object.keys(channel.value).length) {
+  Swal.fire('错误', '频道不存在，请重新选择', 'error')
+    .then(() => router.push('/'))
+} else {
+  getList()
+}
+content = ''
 topic.value = null
-comments.value = []
 keyword.value = ''
 
-axios.get('/api/topic/HOME')
-  .then(res => { content = res.data.content })
-  .catch(console.log)
-
 function login () {
-  if (SS.token) router.push('/main')
+  if (SS.token) router.push('/home/' + SS.channel)
   else window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
 }
 
@@ -50,9 +54,6 @@ function jump () {
 </script>
 
 <style scoped>
-.home {
-  background-color: #111;
-}
 .full {
   min-height: 100vh;
   width: 100%;
@@ -101,7 +102,7 @@ section {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 0;
+  z-index: -1;
 }
 h1 {
   text-align: center;

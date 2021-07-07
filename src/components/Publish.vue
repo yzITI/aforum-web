@@ -3,7 +3,7 @@
     <div class="modal-background" @click="modal = false"></div>
     <div class="modal-content" style="width: 70%;">
       <div class="box">
-        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag">{{ t }}</span>
+        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag" :key="t">{{ t }}</span>
         <input class="input mb-2 mt-2" v-model="tag" @keydown.enter="add" placeholder="输入标签，回车添加">
         <template v-if="isAdmin">
           <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.pin">置顶讨论</label>
@@ -23,7 +23,9 @@
 <script setup>
 import { defineProps, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { topic, draft, SS, postTopic, putTopic } from '../plugins/state.js'
+import { topic, draft, SS, channel } from '../plugins/state.js'
+import { postTopic, putTopic } from '../plugins/action.js'
+
 const props = defineProps(['random'])
 const route = useRoute(), router = useRouter()
 
@@ -76,7 +78,7 @@ async function submit () {
     window.Swal.fire('成功', res.data, 'success')
       .then(res => {
         if (topic.value) router.push(`/topic/${topic.value._id}?` + Math.random())
-        else router.push('/main')
+        else router.push(`/home/${channel.value._id}`)
       })
   }
   loading = false
