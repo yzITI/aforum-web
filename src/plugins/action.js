@@ -3,7 +3,6 @@ import { SS, channel, list, topic, draft, result, keyword } from './state.js'
 export const token = () => ({ headers: { token: SS.token } })
 
 export function popError (err) {
-  console.log(err)
   Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')
   return false
 }

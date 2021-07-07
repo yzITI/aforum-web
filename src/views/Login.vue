@@ -22,10 +22,12 @@ axios.post(`/api/`, { code })
     SS.id = resp.data.id
     SS.role = resp.data.role
     notice = '登录成功，正在跳转...'
-    setTimeout(() => { router.push(`/home/${SS.channel}`) }, 1000)
+    if (SS.channel) setTimeout(() => { router.push(`/home/${SS.channel}`) }, 1000)
   })
   .catch(err => {
     notice = err.response ? err.response.data : '网络错误'
+  })
+  .finally(() => {
     setTimeout(() => { router.push('/') }, 3000)
   })
 

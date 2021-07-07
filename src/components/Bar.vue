@@ -4,7 +4,7 @@
       <span class="icon mr-3" @click="router.push('/') ">
         <i class="mdi mdi-36px mdi-home" />
       </span>
-      <h1 class="title is-4 m-0">{{ route.name ? route.name: SS.channel }}</h1>
+      <h1 class="title is-4 m-0">{{ route.name ? route.name: channel.name }}</h1>
     </div>
     <div v-if="route.path === '/' && !SS.token" style="display: flex; align-items: center;">
       <span class="icon ml-4" @click="login">
@@ -22,7 +22,7 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { keyword, SS, topic, draft } from '../plugins/state.js'
+import { keyword, SS, topic, draft, channel } from '../plugins/state.js'
 import { searchContent } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 

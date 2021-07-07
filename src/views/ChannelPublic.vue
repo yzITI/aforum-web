@@ -32,7 +32,12 @@ import { getList } from '../plugins/action.js'
 const router = useRouter()
 ref: content = ''
 
-getList()
+if (!SS.channel || !Object.keys(channel.value).length) {
+  Swal.fire('错误', '频道不存在，请重新选择', 'error')
+    .then(() => router.push('/'))
+} else {
+  getList()
+}
 content = ''
 topic.value = null
 keyword.value = ''

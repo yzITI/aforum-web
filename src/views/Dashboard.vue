@@ -13,8 +13,9 @@ import { token, popError } from '../plugins/action.js'
 ref: channel = []
 ref: loading = true
 axios.get('/api/', token())
-  .then(res => { channel = res.data, loading = false })
-  .catch(popError, loading = false)
+  .then(res => { channel = res.data })
+  .catch(popError)
+  .finally(() => loading = false)
 
 </script>
 
