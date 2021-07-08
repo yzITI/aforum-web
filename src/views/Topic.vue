@@ -5,7 +5,7 @@
       <p class="is-5 p-1" style="color: #757575;">
         {{ parseDate(topic.timestamp) }}
         <br>
-        {{ topic.publisher }}
+        {{ topic.author }}
       </p>
       <h1 class="title m-0 mt-2 is-2">
         {{ topic.title }}
@@ -39,7 +39,7 @@ import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
 import { SS, topic } from '../plugins/state.js'
-import { getTopic } from '../plugins/action.js'
+import { getTopic, token } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
@@ -53,7 +53,7 @@ ref: searchbar = false
 ref: keyword = ''
 ref: result = []
 
-if (route.params.id.indexOf(SS.id) === 0) isPublisher = true
+if (topic.publisher = SS.id) isPublisher = true
 getTopic(route.params.id)
 
 const commentList = computed(() => {
@@ -75,6 +75,7 @@ function edit () {
   else router.push('/edit')
 }
 
+console.log(typeof token())
 async function remove () {
   const r = await Swal.fire({
     title: '你确定要删除吗？',
@@ -87,13 +88,13 @@ async function remove () {
   if (!r.isConfirmed) return
 
   loading = true
-  await axios.delete(`/api/${SS.channel}/${route.params.id}`, { headers: { token: SS.token } })
+  axios.delete(`/api/${SS.channel}/${route.params.id}`,  token())
     .then(res => {
       Swal.fire('成功', res.data, 'success')
-        .then(() => { router.push('/main') })
+        .then(() => { router.push('/home/' + SS.channel) })
     })
     .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
-  loading = false
+    .finally(() => loading = false)
 }
 </script>
 

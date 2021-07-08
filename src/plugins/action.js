@@ -28,6 +28,7 @@ export const postTopic = () => {
   return axios.post(`/api/${SS.channel}/`, draft.value, token())
     .then(() => true)
     .catch(popError)
+    .finally(() => draft.value = { title: '', content: '' })
 }
 
 export const putTopic = () => {
