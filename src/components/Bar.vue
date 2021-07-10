@@ -1,5 +1,5 @@
 <template>
-  <div class="bar box m-0">
+  <div class="bar box m-0" v-if="!route.path.includes('/channel')">
     <div style="display: flex;">
       <span class="icon mr-3" v-if="route.path !== '/'" @click="router.push('/home/' + SS.channel) " style="cursor: pointer;">
         <i class="mdi mdi-36px mdi-home" />
