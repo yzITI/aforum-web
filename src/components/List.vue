@@ -1,6 +1,6 @@
 <template>
   <div class="list" v-if="list.length">
-    <list-item v-for="n in all" :key="n._id" :info="n" />
+    <list-item v-for="n in all" :key="n._id" :info="n" style="cursor: pointer;"/>
   </div>
   <p v-else class="m-4">暂无数据</p>
 </template>

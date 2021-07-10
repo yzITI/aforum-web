@@ -3,7 +3,7 @@
     <div class="is-5 m-0 pb-0">
       {{ name }} &nbsp; {{ parseDate }} &nbsp;
       <span class="icon" @click="deleteComment(comment._id)" v-if="isAdmin || isPublisher || comment._id.indexOf(SS.id) === 0">
-        <i class="mdi mdi-18px mdi-trash-can-outline" style="color: red" />
+        <i class="mdi mdi-18px mdi-trash-can-outline" style="color: red; cursor: pointer;" />
       </span>
     </div>
     <div class="m-0 pt-0 pb-0" style="width:100%; color: black"><markdown :content="comment.content" /></div>
