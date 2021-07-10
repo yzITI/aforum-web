@@ -26,8 +26,6 @@ axios.post(`/api/`, { code })
   })
   .catch(err => {
     notice = err.response ? err.response.data : '网络错误'
-  })
-  .finally(() => {
     setTimeout(() => { router.push('/') }, 3000)
   })
 
