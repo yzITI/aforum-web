@@ -3,11 +3,11 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: '论坛',
     component: () => import('./views/Dashboard.vue')
   },
   {
     path: '/home/:id',
+    name: '频道',
     component: () => import('./views/ChannelHome.vue')
   },
   {
@@ -32,7 +32,6 @@ const routes = [
   },
   {
     path: '/channel/:id',
-    name: '频道',
     component: () => import('./views/ChannelPublic.vue')
   }
 ]

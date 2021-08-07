@@ -1,6 +1,6 @@
 <template>
   <div class="mainclass">
-    <button class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="router.push('/edit'); topic = null">
+    <button v-if="!editor" class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="write">
       <span class="icon">
         <i class="mdi mdi-24px mdi-pencil" />
       </span>
@@ -13,7 +13,8 @@
 import { useRoute, useRouter } from 'vue-router'
 import List from '../components/List.vue'
 import { getList, token, popError } from '../plugins/action.js'
-import { SS, channel } from '../plugins/state.js'
+import { SS, channel, editor } from '../plugins/state.js'
+import template from '../plugins/template.js'
 
 const router = useRouter()
 if (!SS.token) {
@@ -38,6 +39,12 @@ if (!SS.token) {
   }
 }
 
+function write() {
+  editor.value = {
+    content: template,
+    submit: () => { console.log(editor.value.content) }
+  }
+}
 </script>
 
 <style scoped>

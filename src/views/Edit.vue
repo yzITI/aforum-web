@@ -1,4 +1,5 @@
 <template>
+  <editor></editor>
   <input class="input is-normal" placeholder="标题" v-model="draft.title" style="height: 5vh;">
   <span class="icon" v-if="!wide" style="position: absolute; width: 40px; height: 5vh; right: 32px;" @click="preview++">
     <i class="mdi mdi-24px mdi-text-box-search" />
@@ -24,6 +25,7 @@
 </template>
 
 <script setup>
+import Editor from '../components/Editor.vue'
 import Markdown from '../components/Markdown.vue'
 import Publish from '../components/Publish.vue'
 import Template from '../template.js'

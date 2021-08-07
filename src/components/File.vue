@@ -1,17 +1,17 @@
 <template>
   <div class="modal is-active" v-if="uploadImage">
     <div class="modal-background" @click="uploadImage = false" />
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 400px;">
       <div class="box file has-name">
         <label class="file-label">
           <input class="file-input" type="file" @change="uploadfile" accept="image/*">
           <span class="file-cta">
             <span class="file-icon"><i class="mdi mdi-24px mdi-upload" /></span>
-            <span class="file-label">Choose a file…</span>
+            <span class="file-label">选择图片</span>
           </span>
           <span class="file-name" v-if="file">{{ file && file.name }}</span>
         </label>
-        <button class="button is-info ml-3" :class="{ 'is-loading': imgLoading }" @click="upload">上传</button>
+        <button v-if="file" class="button is-info ml-3" :class="{ 'is-loading': imgLoading }" @click="upload">上传</button>
       </div>
       <div class="box mt-5" v-if="imgStr" @click="copy">
         <p class="title is-5 mb-2">点击复制</p>
