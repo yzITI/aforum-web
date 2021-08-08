@@ -32,7 +32,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { topic, SS, channel, editor } from '../plugins/state.js'
-import { postTopic, postComment } from '../plugins/action.js'
+import { publishTopic, postComment } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 
 ref: loading = false
@@ -55,7 +55,7 @@ function add () {
 
 async function submit () {
   loading = true
-  const res = editor.value.title ? await postTopic() : await postComment()
+  const res = editor.value.title ? await publishTopic() : await postComment()
   if (res) {
     modal = false
     window.Swal.fire('成功', res, 'success')

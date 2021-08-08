@@ -13,10 +13,12 @@
 import { useRoute, useRouter } from 'vue-router'
 import List from '../components/List.vue'
 import { getList, token, popError } from '../plugins/action.js'
-import { SS, channel, editor } from '../plugins/state.js'
+import { SS, channel, editor, topic } from '../plugins/state.js'
 import template from '../plugins/template.js'
-
 const router = useRouter()
+
+topic.value = null
+
 if (!SS.token) {
   Swal.fire('错误', '请先登录', 'error')
     .then(() => router.push('/'))

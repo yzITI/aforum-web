@@ -23,9 +23,9 @@ export const getTopic = (id, timestamp=null) => {
     .catch(popError)
 }
 
-export const postTopic = () => {
+export const publishTopic = () => {
   if (!editor.value) return false
-  return axios.post(`/api/${SS.channel}/`, editor.value, token())
+  return axios.put(`/api/${SS.channel}/${editor.value._id}`, editor.value, token())
     .then(() => '发布讨论成功')
     .catch(popError)
 }
