@@ -6,9 +6,9 @@ const routes = [
     component: () => import('./views/Home.vue')
   },
   {
-    path: '/home/:id',
-    name: '频道',
-    component: () => import('./views/ChannelHome.vue')
+    path: '/discuss/:id',
+    name: 'channel',
+    component: () => import('./views/Discuss.vue')
   },
   {
     path: '/topic/:id',
@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/channel/:id',
-    component: () => import('./views/ChannelPublic.vue')
+    component: () => import('./views/Channel.vue')
   }
 ]
 

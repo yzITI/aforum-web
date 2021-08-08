@@ -1,5 +1,5 @@
 <template>
-  <div class="channel-card box m-2" @click="router.push('/channel/' + info._id)">
+  <div class="channel-card box m-2" @click="go">
     <img :src="info.bg || '/bg.jpg'" onerror="this.src = '/bg.jpg'">
     <h1 class="title m-2">{{ info.name }}</h1>
     <div class="tip" v-if="info.permission">
@@ -14,10 +14,13 @@
 <script setup>
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import { channel } from '../plugins/state.js'
 const { info } = defineProps(['info'])
 const router = useRouter()
-
-console.log(info)
+function go () {
+  channel.value = info
+  router.push('/channel/' + info._id)
+}
 </script>
 
 <style scoped>

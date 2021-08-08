@@ -1,5 +1,7 @@
 <template>
-  <banner bg="/bg.jpg" title="在线讨论平台"></banner>
+  <banner bg="/bg.jpg" title="在线讨论平台">
+    <button class="button" v-if="!SS.token" @click="login">点击登录</button>
+  </banner>
   <div class="notification is-info is-light" v-if="!SS.token"
     @click="login"
     style="width: 90%; max-width: 450px; margin: 0 auto; cursor: pointer;">
@@ -16,10 +18,11 @@
 import Banner from '../components/Banner.vue'
 import ChannelCard from '../components/ChannelCard.vue'
 import { token, popError } from '../plugins/action.js'
-import { SS, editor } from '../plugins/state.js'
+import { SS, editor, channel } from '../plugins/state.js'
 
-// clear draft
+// clean
 editor.value = null
+channel.value = null
 
 ref: channels = []
 ref: loading = true
