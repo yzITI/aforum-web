@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <header class="card-header">
-      <p class="card-header-title mr-6">编辑发布</p>
+      <p class="card-header-title mr-6">编辑{{ editor.title ? '讨论' : '回复' }}</p>
       <div class="card-header-icon">
         <span class="icon" v-if="expand" @click="expand = false">
           <i class="mdi mdi-24px mdi-window-minimize"></i>
