@@ -1,87 +1,66 @@
 <template>
   <div class="modal is-active" v-if="modal">
     <div class="modal-background" @click="modal = false"></div>
-    <div class="modal-content" style="width: 70%;">
+    <div class="modal-content" style="max-width: 560px;">
       <div class="box">
-        标签：<span class="tag mr-1 is-info is-light" v-for="t in setting.tag" :key="t">{{ t }}</span>
-        <input class="input mb-2 mt-2" v-model="tag" @keydown.enter="add" placeholder="输入标签，回车添加">
-        <template v-if="isAdmin">
-          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.pin">置顶讨论</label>
-          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.hide">隐藏讨论</label>
-          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.restrict">评论互不可见</label>
-          <label class="checkbox mr-2"><input class="mr-1" type="checkbox" v-model="setting.public">公开到首页</label>
+        <h3 class="title is-4">发布</h3>
+        <template v-if="typeof editor.title !== 'undefined'">
+          <label class="label">
+            讨论标题：
+            <input class="input mt-1 is-small" v-model="editor.title" placeholder="输入标题，最多25字符">
+          </label>
         </template>
-        <div class="buttons mt-2">
-          <button v-if="isAdmin && topic && route.path !== '/edit'" class="button is-info is-small" @click="router.push('/edit');">修改内容</button>
-          <button class="button is-primary is-small" :class="{ 'is-loading': loading }" @click="submit">发布</button>
-        </div>
+        <template v-if="editor.tag">
+          <label class="label">
+            标签：
+            <span class="tag mr-1 is-info is-light" v-for="t in editor.tag" :key="t">{{ t }}</span>
+          </label>
+          <input class="input mb-2 is-small" v-model="tag" @keydown.enter="add" placeholder="输入标签，回车添加">
+        </template>
+        <template v-for="(v, k) in checks">
+          <label class="checkbox m-2" v-if="typeof editor[k] !== 'undefined'">
+            <input class="mr-1" type="checkbox" v-model="editor[k]">{{ v }}
+          </label>
+        </template>
+        <button class="button is-primary is-block mt-2" :class="{ 'is-loading': loading }" :disabled="typeof editor.title !== 'undefined' && (editor.title.length > 25 || !editor.title.match(/\S/))" @click="submit">确认发布</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, computed, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { topic, draft, SS, channel } from '../plugins/state.js'
-import { postTopic, putTopic } from '../plugins/action.js'
-
-const props = defineProps(['random'])
+import { topic, SS, channel, editor } from '../plugins/state.js'
+import { postTopic, postComment } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 
 ref: loading = false
-ref: modal = false
-ref: isAdmin = SS.role === 'ADMIN'
-ref: setting = {
-  anonymous: false,
-  public: false,
-  pin: false,
-  hide: false,
-  restrict: false,
-  tag: []
-}
+ref: modal = true
 ref: tag = ''
-ref: title = computed(() => {
-  if (topic.value && !isAdmin) return '确认修改？'
-  return '发布设置'
-})
+const checks = {
+  author: '匿名发布',
+  anonymous: '允许匿名评论',
+  public: '公开到首页',
+  pin: '置顶讨论',
+  hide: '隐藏讨论',
+  restrict: '评论互不可见'
+}
 
 function add () {
   if (!tag.length) return
-  setting.tag.push(tag)
+  editor.value.tag.push(tag)
   tag = ''
 }
 
-function random (v) {
-  modal = v
-  loading = false
-  if (topic.value) {
-    setting = {
-      anonymous: topic.value.anonymous,
-      public: topic.value.public,
-      pin: topic.value.pin,
-      hide: topic.value.hide,
-      restrict: topic.value.restrict,
-      tag: topic.value.tag
-    }
-  }
-}
-
-watch(() => props.random, () => random(props.random))
-
 async function submit () {
   loading = true
-  draft.value = { ...draft.value, ...setting }
-  const res = topic.value ? await putTopic() : await postTopic()
+  const res = editor.value.title ? await postTopic() : await postComment()
   if (res) {
     modal = false
-    window.Swal.fire('成功', res.data, 'success')
-      .then(res => {
-        if (topic.value) router.push(`/topic/${topic.value._id}?` + Math.random())
-        else router.push(`/home/${channel.value._id}`)
-      })
+    window.Swal.fire('成功', res, 'success')
   }
   loading = false
-  draft.value = { title: '', content: '' }
+  editor.value = null
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="modal is-active" v-if="uploadImage">
-    <div class="modal-background" @click="uploadImage = false" />
+  <div class="modal is-active" v-if="modal">
+    <div class="modal-background" @click="modal = false" />
     <div class="modal-content" style="max-width: 400px;">
       <div class="box file has-name">
         <label class="file-label">
@@ -23,20 +23,12 @@
 </template>
 
 <script setup>
-import { defineProps, watch } from 'vue'
 import { SS } from '../plugins/state.js'
-const props = defineProps(['random'])
 
-ref: uploadImage = false
+ref: modal = true
 ref: file = null
 ref: imgStr = ''
 ref: imgLoading = false
-
-watch(() => props.random, () => {
-  uploadImage = props.random
-  file = null
-  imgStr = ''
-})
 
 function uploadfile (f) {
   const files = f.target.files || f.dataTransfer.files

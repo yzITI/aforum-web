@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-if="editor && route.name">
+  <div class="card">
     <header class="card-header">
       <p class="card-header-title mr-6">编辑发布</p>
       <div class="card-header-icon">
@@ -16,11 +16,11 @@
     </header>
     <template v-if="expand">
     <div class="card-content">
-      <textarea v-if="showRaw" rows="20" v-model="editor.content"/>
+      <textarea v-if="showRaw" placeholder="在这里写作... 至少需要20个字符" rows="20" v-model="editor.content"/>
       <markdown v-if="showPreview" class="md" :content="editor.content"></markdown>
     </div>
     <footer class="card-footer p-2">
-      <button class="button is-small is-primary" @click="editor.submit">
+      <button class="button is-small is-primary" :disabled="editor.content.replace(/\s/g, '').length < 20" @click="showPublish++">
         <span class="icon">
           <i class="mdi mdi-18px mdi-check"></i>
         </span>
@@ -40,20 +40,21 @@
     </footer>
     </template>
   </div>
-  <file :random="showFile" />
+  <file v-if="showFile" :key="showFile" />
+  <publish v-if="showPublish" :key="showPublish" />
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-const route = useRoute()
 import { editor } from '../plugins/state.js'
 import Markdown from './Markdown.vue'
 import File from './File.vue'
+import Publish from './Publish.vue'
 
 ref: expand = true
 ref: showPreview = true
 ref: showRaw = true
 ref: showFile = 0
+ref: showPublish = 0
 
 function checkShow () {
   if (window.innerWidth < 700) showPreview = !showRaw
@@ -103,9 +104,11 @@ textarea {
   padding: 10px 20px;
   border: 0;
   flex-grow: 1;
+  resize: none;
 }
 .md {
   height: 65vh;
+  min-width: 50%;
   overflow-y: auto;
   padding: 16px;
   flex-grow: 1;

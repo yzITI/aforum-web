@@ -9,6 +9,8 @@
 <script setup>
 import ChannelCard from '../components/ChannelCard.vue'
 import { token, popError } from '../plugins/action.js'
+import { editor } from '../plugins/state.js'
+editor.value = null
 
 ref: channel = []
 ref: loading = true

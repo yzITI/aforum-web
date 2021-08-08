@@ -1,6 +1,6 @@
 <template>
   <div class="mainclass">
-    <button v-if="!editor" class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="write">
+    <button v-if="channel.permission > 0 && !editor" class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="write">
       <span class="icon">
         <i class="mdi mdi-24px mdi-pencil" />
       </span>
@@ -41,8 +41,20 @@ if (!SS.token) {
 
 function write() {
   editor.value = {
+    _id: Math.random().toString(36).substr(2),
     content: template,
-    submit: () => { console.log(editor.value.content) }
+    title: ''
+  }
+  if (channel.value.anonymous) {
+    editor.value.author = false
+    editor.value.anonymous = false
+  }
+  if (channel.value.permission > 1) {
+    editor.value.public = false
+    editor.value.pin = false
+    editor.value.hide = false
+    editor.value.restrict = false
+    editor.value.tag = []
   }
 }
 </script>

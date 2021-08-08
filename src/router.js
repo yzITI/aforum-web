@@ -11,11 +11,6 @@ const routes = [
     component: () => import('./views/ChannelHome.vue')
   },
   {
-    path: '/edit',
-    name: '编辑发布',
-    component: () => import('./views/Edit.vue')
-  },
-  {
     path: '/topic/:id',
     name: '讨论',
     component: () => import('./views/Topic.vue')

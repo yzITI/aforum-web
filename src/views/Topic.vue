@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; height: 100%;">
-    <publish :random="showPublish"></publish>
     <div class="topic m-4" v-if="topic">
       <p class="is-5 p-1" style="color: #757575;">
         {{ parseDate(topic.timestamp) }}
@@ -35,7 +34,6 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Markdown from '../components/Markdown.vue'
-import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
 import CommentEditor from '../components/CommentEditor.vue'
 import { SS, topic } from '../plugins/state.js'
@@ -45,7 +43,6 @@ const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
-ref: showPublish = 0
 ref: isAdmin = SS.role === 'ADMIN'
 ref: isPublisher = false
 ref: show = false
