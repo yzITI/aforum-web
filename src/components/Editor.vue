@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <header class="card-header">
-      <p class="card-header-title mr-6">编辑{{ editor.title ? '讨论' : '回复' }}</p>
+      <p class="card-header-title mr-6" @click="expand = true">编辑{{ editor.title ? '讨论' : '回复' }}</p>
       <div class="card-header-icon">
         <span class="icon" v-if="expand" @click="expand = false">
           <i class="mdi mdi-24px mdi-window-minimize"></i>
@@ -82,12 +82,14 @@ div.card {
   bottom: 16px;
   right: 16px;
   background-color: white;
+  transition: all 0.5s ease;
 }
 .card-header {
   background-color: #333;
   color: white;
 }
 .card-header-title {
+  cursor: pointer;
   color: white;
 }
 .card-content {
@@ -117,5 +119,12 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 1000px) {
+  div.card {
+    right: 0;
+    bottom: 0;
+  }
 }
 </style>
