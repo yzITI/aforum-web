@@ -1,4 +1,4 @@
-import { SS, channel, list, topic, draft, result, keyword } from './state.js'
+import { SS, channel, list, topic, editor, result, keyword } from './state.js'
 
 export const token = () => ({ headers: { token: SS.token } })
 
@@ -23,18 +23,16 @@ export const getTopic = (id, timestamp=null) => {
     .catch(popError)
 }
 
-export const postTopic = () => {
-  if (!draft.value) return false
-  return axios.post(`/api/${SS.channel}/`, draft.value, token())
-    .then(() => true)
+export const publishTopic = () => {
+  if (!editor.value) return false
+  return axios.put(`/api/${SS.channel}/${editor.value._id}`, editor.value, token())
+    .then(() => '发布讨论成功')
     .catch(popError)
-    .finally(() => draft.value = { title: '', content: '' })
 }
 
-export const putTopic = () => {
-  if (!draft.value || !topic.value) return false
-  return axios.put(`/api/${SS.channel}/${topic.value._id}`, draft.value, token())
-    .then(() => true)
+export const postComment = () => {
+  return axios.post(`/api/${SS.channel}/${topic.value._id}`, editor.value, token())
+    .then(res => '发布评论成功')
     .catch(popError)
 }
 
@@ -43,15 +41,6 @@ export const deleteComment = (id) => {
     .then(res => {
       Swal.fire('成功', res.data, 'success')
       topic.value.comments = topic.value.comments.filter(a => a._id !== id)
-    })
-    .catch(popError)
-}
-
-export const postComment = (t, d) => {
-  return axios.post(`/api/${SS.channel}/${t}`, d, token())
-    .then(async res => {
-      Swal.fire('成功', '', 'success')
-      getTopic(t)
     })
     .catch(popError)
 }

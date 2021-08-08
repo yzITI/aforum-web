@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; height: 100%;">
-    <publish :random="showPublish"></publish>
-    <div class="topic m-4" v-if="topic">
+    <h1 v-if="!topic" class="title is-5 m-3">正在载入...</h1>
+    <div class="topic m-4" v-else>
       <p class="is-5 p-1" style="color: #757575;">
         {{ parseDate(topic.timestamp) }}
         <br>
@@ -19,11 +19,7 @@
       <markdown class="m-2" :content="topic.content"></markdown>
     </div>
     <div v-if="SS.token">
-      <button class="button is-primary mb-2 ml-4" v-if="topic" @click="show = !show">
-        {{ show ? '收起' : '添加回复' }}
-        <span class="icon ml-1" :class="show ? 'mdi mdi-18px mdi-chevron-up' : 'mdi mdi-18px mdi-chevron-down'"></span>
-      </button>
-      <comment-editor class="mb-2 ml-4" v-if="topic && show" :anonymous="topic.anonymous" />
+      <button class="button is-primary mb-2 ml-4" v-if="topic" @click="writeComment">添加回复</button>
     </div>
     <div class="comment ml-4 mr-4 mt-2" v-if="topic && commentList.length">
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
@@ -35,28 +31,26 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Markdown from '../components/Markdown.vue'
-import Publish from '../components/Publish.vue'
 import Comment from '../components/Comment.vue'
-import CommentEditor from '../components/CommentEditor.vue'
-import { SS, topic } from '../plugins/state.js'
+import { SS, topic, editor, channel } from '../plugins/state.js'
 import { getTopic, token } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
-ref: showPublish = 0
 ref: isAdmin = SS.role === 'ADMIN'
-ref: isPublisher = false
-ref: show = false
 ref: searchbar = false
 ref: keyword = ''
 ref: result = []
 
-if (topic.publisher = SS.id) isPublisher = true
 getTopic(route.params.id)
-
+const isPublisher = computed(() => {
+  if (!topic.value) return false
+  if (topic.value.publisher = SS.id) return true
+})
 const commentList = computed(() => {
+  if (!topic.value) return []
   if (!keyword.value) return topic.value.comments
   const reg = new RegExp(keyword.value, 'i')
   return topic.value.comments.filter(x => reg.test(x.content) || reg.test(x.publisher))
@@ -71,11 +65,28 @@ function parseDate (timestamp) {
 }
 
 function edit () {
-  if (isAdmin) showPublish++
-  else router.push('/edit')
+  editor.value = {
+    _id: topic.value._id,
+    content: topic.value.content,
+    title: topic.value.title
+  }
+  if (channel.value.permission > 1) {
+    editor.value.public = topic.value.public
+    editor.value.pin = Boolean(topic.value.pin)
+    editor.value.hide = topic.value.hide
+    editor.value.restrict = topic.value.restrict
+    editor.value.tag = topic.value.tag
+  }
 }
 
-console.log(typeof token())
+function writeComment () {
+  editor.value = {
+    _id: Math.random().toString(36).substr(2),
+    content: ''
+  }
+  if (topic.value.anonymous) editor.value.author = false
+}
+
 async function remove () {
   const r = await Swal.fire({
     title: '你确定要删除吗？',
