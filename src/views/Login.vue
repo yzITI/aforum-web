@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1 style="margin-bottom: 50px; font-size: 3rem;">{{ SS.channel }}</h1>
+    <h1 style="margin-bottom: 50px; font-size: 3rem;">在线讨论平台</h1>
     <h2>{{ notice }}</h2>
   </div>
 </template>
@@ -22,7 +22,7 @@ axios.post(`/api/`, { code })
     SS.id = resp.data.id
     SS.role = resp.data.role
     notice = '登录成功，正在跳转...'
-    if (SS.channel) setTimeout(() => { router.push(`/home/${SS.channel}`) }, 1000)
+    setTimeout(() => { router.push(`/`) }, 1000)
   })
   .catch(err => {
     notice = err.response ? err.response.data : '网络错误'
