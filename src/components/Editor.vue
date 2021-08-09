@@ -102,7 +102,7 @@ textarea {
   height: 65vh;
   min-width: 50%;
   overflow-y: auto;
-  background-color: #EEEEEE;
+  background-color: #eee;
   padding: 10px 20px;
   border: 0;
   flex-grow: 1;

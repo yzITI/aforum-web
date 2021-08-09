@@ -31,7 +31,7 @@
     <section class="show">
       <markdown :content="content || '管理员很懒，什么都没写。'" />
     </section>
-    <section style="background-color: #eee; padding: 5vh 0;">
+    <section class="public">
       <h1 class="title is-3" style="text-align: center;">精品内容</h1>
       <list />
     </section>
@@ -64,10 +64,15 @@ function login () {
 section {
   position: relative;
   z-index: 10;
-  min-height: 40vh;
+  min-height: 38vh;
 }
 .show {
   background-color: white;
   padding: 8px 8%;
+}
+.public {
+  padding: 5vh 0;
+  background: rgb(221,164,255);
+  background: linear-gradient(0deg, rgba(221,164,255,1) 0%, rgba(190,216,252,1) 33%, rgba(255,255,255,1) 100%);
 }
 </style>

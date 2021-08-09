@@ -14,7 +14,7 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { keyword, SS, topic, draft, channel } from '../plugins/state.js'
+import { keyword, SS, topic, channel } from '../plugins/state.js'
 import { searchContent } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 

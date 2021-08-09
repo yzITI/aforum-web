@@ -1,8 +1,8 @@
 <template>
   <banner bg="/bg.jpg" title="在线讨论平台">
-    <button class="button" v-if="!SS.token" @click="login">点击登录</button>
+    <button class="button is-primary" v-if="!SS.token" @click="login">点击登录</button>
   </banner>
-  <div class="notification is-info is-light" v-if="!SS.token"
+  <div class="notification is-info is-light mt-4" v-if="!SS.token"
     @click="login"
     style="width: 90%; max-width: 450px; margin: 0 auto; cursor: pointer;">
     您还没有登录，点击此处可以登录查看更多精彩内容！

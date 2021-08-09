@@ -14,14 +14,14 @@
 import Markdown from './Markdown.vue'
 import { computed, defineProps } from 'vue'
 import { useRoute } from 'vue-router'
-import { SS } from '../plugins/state.js'
+import { SS, channel } from '../plugins/state.js'
 import { deleteComment } from '../plugins/action.js'
 
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const { comment } = defineProps(['comment'])
 const route = useRoute()
 
-ref: isAdmin = SS.role === 'ADMIN'
+ref: isAdmin = channel.value.permission == 2
 ref: isPublisher = false
 
 if (route.params.id.indexOf(SS.id) === 0) isPublisher = true
@@ -35,6 +35,4 @@ const parseDate = computed(() => {
   const time = s[1].substr(0, 8)
   return date + ' ' + time
 })
-
-
 </script>

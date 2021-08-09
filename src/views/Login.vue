@@ -20,7 +20,6 @@ axios.post(`/api/`, { code })
   .then(resp => {
     SS.token = resp.data.token
     SS.id = resp.data.id
-    SS.role = resp.data.role
     notice = '登录成功，正在跳转...'
     setTimeout(() => { router.push(`/`) }, 1000)
   })
