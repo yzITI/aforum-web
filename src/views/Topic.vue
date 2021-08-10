@@ -19,7 +19,7 @@
       <markdown class="m-2" :content="topic.content"></markdown>
     </div>
     <div v-if="SS.token">
-      <button class="button is-primary mb-2 ml-4" v-if="topic" @click="writeComment">添加回复</button>
+      <button class="button is-primary mb-2 ml-4" v-if="topic" :disabled="editor" @click="writeComment">添加回复</button>
     </div>
     <div class="comment ml-4 mr-4 mt-2" v-if="topic && commentList.length">
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
@@ -39,7 +39,7 @@ const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
-ref: isAdmin = SS.role === 'ADMIN'
+ref: isAdmin = channel.value.permission == 2
 ref: searchbar = false
 ref: keyword = ''
 ref: result = []

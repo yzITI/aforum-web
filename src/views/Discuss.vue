@@ -1,5 +1,5 @@
 <template>
-  <div class="mainclass">
+  <div class="discuss">
     <button v-if="channel.permission > 0 && !editor" class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="write">
       <span class="icon">
         <i class="mdi mdi-24px mdi-pencil" />
@@ -62,7 +62,11 @@ function write() {
 </script>
 
 <style scoped>
-.mainclass {
-  height: 100%;
+.discuss {
+  min-height: 93vh;
+  background-color: #ddd;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 </style>

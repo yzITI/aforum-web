@@ -3,12 +3,12 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('./views/Dashboard.vue')
+    component: () => import('./views/Home.vue')
   },
   {
-    path: '/home/:id',
-    name: '频道',
-    component: () => import('./views/ChannelHome.vue')
+    path: '/discuss/:id',
+    name: 'channel',
+    component: () => import('./views/Discuss.vue')
   },
   {
     path: '/topic/:id',
@@ -22,12 +22,12 @@ const routes = [
   },
   {
     path: '/login',
-    name: '登陆',
+    name: '登录',
     component: () => import('./views/Login.vue')
   },
   {
     path: '/channel/:id',
-    component: () => import('./views/ChannelPublic.vue')
+    component: () => import('./views/Channel.vue')
   }
 ]
 
