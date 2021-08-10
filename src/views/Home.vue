@@ -26,7 +26,7 @@ channel.value = null
 
 ref: channels = []
 ref: loading = true
-axios.get('/api/', token())
+axios.get('/api/general/channels', token())
   .then(res => { channels = res.data })
   .catch(err => {
     Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')

@@ -16,7 +16,7 @@ if (!code) {
   setTimeout(() => { router.push('/') }, 3000)
 }
 
-axios.post(`/api/`, { code })
+axios.post(`/api/general/login`, { code })
   .then(resp => {
     SS.token = resp.data.token
     SS.id = resp.data.id

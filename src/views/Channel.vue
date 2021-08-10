@@ -29,7 +29,7 @@
   </banner>
   <div>
     <section class="show">
-      <markdown :content="content || '管理员很懒，什么都没写。'" />
+      <markdown :content="channel.show || 'Loading...'" />
     </section>
     <section class="public">
       <h1 class="title is-3" style="text-align: center;">精品内容</h1>
@@ -43,17 +43,19 @@ import Banner from '../components/Banner.vue'
 import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
 
-import { useRouter } from 'vue-router'
-import { topic, keyword, SS, channel } from '../plugins/state.js'
-import { getList } from '../plugins/action.js'
+import { useRouter, useRoute } from 'vue-router'
+import { topic, keyword, SS, channel, list } from '../plugins/state.js'
+import { getChannel } from '../plugins/action.js'
 
-const router = useRouter()
-ref: content = ''
+const router = useRouter(), route = useRoute()
 
-getList()
-content = ''
+getChannel(route.params.id)
+  .then(res => { if (!res) router.push('/') })
+
+// clean
 topic.value = null
 keyword.value = ''
+list.value = []
 
 function login () {
   if (!SS.token) window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'

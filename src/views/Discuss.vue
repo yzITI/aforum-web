@@ -12,34 +12,24 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import List from '../components/List.vue'
-import { getList, token, popError } from '../plugins/action.js'
+import { getList, getChannel } from '../plugins/action.js'
 import { SS, channel, editor, topic } from '../plugins/state.js'
 import template from '../plugins/template.js'
-const router = useRouter()
+const router = useRouter(), route = useRoute()
 
 topic.value = null
 
-if (!SS.token) {
-  Swal.fire('错误', '请先登录', 'error')
-    .then(() => router.push('/'))
-} else {
-  setInterval(() => { getList() }, 60000)
-  // incase refreshing
-  if (SS.channel && !Object.keys(channel.value).length) {
-    axios.get('/api/', token())
-      .then(res => { 
-        for (const c of res.data) {
-          if (c._id == SS.channel) {
-            channel.value = c;
-            getList()
-          }
-        }
-      })
-      .catch(popError)
+async function init () {
+  if (!SS.token) {
+    Swal.fire('错误', '请先登录', 'error')
+      .then(() => router.push('/'))
   } else {
-    getList()
+    const cid = route.params.id
+    if (!channel.value.name) await getChannel(cid)
+    getList(cid)
   }
 }
+init()
 
 function write() {
   editor.value = {

@@ -10,8 +10,8 @@
       <h1 class="title m-0 mt-2 is-2">
         {{ topic.title }}
         <div class="buttons is-inline-block">
-          <button class="button is-info is-small ml-2 is-light" v-if="isAdmin || isPublisher" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
-          <button class="button is-danger is-small is-light" v-if="(isAdmin || isPublisher) && !(topic._id.indexOf('HOME') === 0)" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
+          <button class="button is-info is-small ml-2 is-light" v-if="topic.permission == 2" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
+          <button class="button is-danger is-small is-light" v-if="topic.permission == 2 && topic._id !== topic.channel" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
         </div>
       </h1>
       <span v-for="(tag, index) in topic.tag" :key="index" class="tag is-info is-light" style="margin: 5px 2px;">{{ tag }}</span>
@@ -32,28 +32,23 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Markdown from '../components/Markdown.vue'
 import Comment from '../components/Comment.vue'
-import { SS, topic, editor, channel } from '../plugins/state.js'
-import { getTopic, token } from '../plugins/action.js'
+import { SS, topic, comments, editor, channel } from '../plugins/state.js'
+import { getTopic, getComments, token, popError } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
-ref: isAdmin = channel.value.permission == 2
-ref: searchbar = false
 ref: keyword = ''
-ref: result = []
 
+getComments(route.params.id)
 getTopic(route.params.id)
-const isPublisher = computed(() => {
-  if (!topic.value) return false
-  if (topic.value.publisher = SS.id) return true
-})
+  .then(() => { if (!channel.value._id) channel.value._id = topic.value.channel })
+
 const commentList = computed(() => {
-  if (!topic.value) return []
-  if (!keyword.value) return topic.value.comments
+  if (!keyword.value) return comments.value
   const reg = new RegExp(keyword.value, 'i')
-  return topic.value.comments.filter(x => reg.test(x.content) || reg.test(x.publisher))
+  return comments.value.filter(x => reg.test(x.content) || reg.test(x.author))
 })
 
 function parseDate (timestamp) {
@@ -90,7 +85,7 @@ function writeComment () {
 async function remove () {
   const r = await Swal.fire({
     title: '你确定要删除吗？',
-    text: "此操作不可以撤销",
+    text: '所有回复也会被删除',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: '确认',
@@ -99,12 +94,12 @@ async function remove () {
   if (!r.isConfirmed) return
 
   loading = true
-  axios.delete(`/api/${SS.channel}/${route.params.id}`,  token())
+  axios.delete(`/api/topic/${route.params.id}`, token())
     .then(res => {
       Swal.fire('成功', res.data, 'success')
-        .then(() => { router.push('/home/' + SS.channel) })
+        .then(() => { router.push('/discuss/' + channel.value._id) })
     })
-    .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
+    .catch(err => { Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
     .finally(() => loading = false)
 }
 </script>
