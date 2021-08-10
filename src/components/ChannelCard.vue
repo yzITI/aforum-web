@@ -41,6 +41,7 @@ img {
   height: 200px;
   opacity: 0.6;
   transition: all 0.5s ease;
+  object-fit: cover;
 }
 img:hover {
   opacity: 0.9;
