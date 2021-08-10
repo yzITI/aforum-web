@@ -8,6 +8,9 @@
     </div>
     <div style="display: flex; align-items: center;">
       <input class="input is-outlined" type="text" placeholder="搜索" onfocus="this.placeholder = '回车全文搜索'" onblur="this.placeholder = '搜索'" v-model="keyword" @keyup.enter="searchContent">
+      <span class="icon ml-3" v-if="channel.permission == 2" @click="router.push('/admin/' + channel._id)" style="cursor: pointer;">
+        <i class="mdi mdi-24px mdi-cog"></i>
+      </span>
     </div>
   </div>
 </template>

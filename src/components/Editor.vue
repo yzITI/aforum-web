@@ -67,6 +67,7 @@ async function close () {
     title: '确认关闭？',
     html: '您的草稿将会被删除',
     icon: 'warning',
+    confirmButtonText: '确认关闭',
     cancelButtonText: '继续编辑',
     showCancelButton: true
   }).then(res => res.isConfirmed)

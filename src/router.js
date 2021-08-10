@@ -16,11 +16,6 @@ const routes = [
     component: () => import('./views/Topic.vue')
   },
   {
-    path: '/admin',
-    name: '管理',
-    component: () => import('./views/Admin.vue')
-  },
-  {
     path: '/login',
     name: '登录',
     component: () => import('./views/Login.vue')
@@ -28,11 +23,15 @@ const routes = [
   {
     path: '/channel/:id',
     component: () => import('./views/Channel.vue')
+  },
+  {
+    path: '/admin/:id',
+    name: '管理 - channel',
+    component: () => import('./views/Admin.vue')
   }
 ]
 
 const router = createRouter({ history: createWebHashHistory(), routes }) 
-
 router.afterEach(() => {
   Swal.close()
 })
