@@ -1,8 +1,8 @@
 <template>
   <div class="box">
     <div class="is-5 m-0 pb-0">
-      {{ name }} &nbsp; {{ parseDate }} &nbsp;
-      <span class="icon" @click="deleteComment(comment._id)" v-if="isAdmin || isPublisher || comment._id.indexOf(SS.id) === 0">
+      {{ comment.author }} &nbsp; {{ parseDate }} &nbsp;
+      <span class="icon" @click="remove" v-if="comment.permission === 2">
         <i class="mdi mdi-18px mdi-trash-can-outline" style="color: red; cursor: pointer;" />
       </span>
     </div>
@@ -14,19 +14,26 @@
 import Markdown from './Markdown.vue'
 import { computed, defineProps } from 'vue'
 import { useRoute } from 'vue-router'
-import { SS } from '../plugins/state.js'
-import { deleteComment } from '../plugins/action.js'
+import { deleteComment, getComments } from '../plugins/action.js'
 
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const { comment } = defineProps(['comment'])
 const route = useRoute()
 
-ref: isAdmin = SS.role === 'ADMIN'
-ref: isPublisher = false
+console.log(comment)
+async function remove () {
+  const r = await Swal.fire({
+    title: '你确定要删除吗？',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  if (!r.isConfirmed) return
+  await deleteComment(comment._id)
+  getComments(route.params.id)
+}
 
-if (route.params.id.indexOf(SS.id) === 0) isPublisher = true
-
-const name = computed(() => comment.anonymous ? '匿名' : comment.author)
 const parseDate = computed(() => {
   const timestamp = comment.timestamp
   if (!timestamp || typeof (timestamp) === 'undefined') return
@@ -35,6 +42,4 @@ const parseDate = computed(() => {
   const time = s[1].substr(0, 8)
   return date + ' ' + time
 })
-
-
 </script>

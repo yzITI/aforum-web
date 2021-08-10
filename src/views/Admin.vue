@@ -1,80 +1,98 @@
 <template>
   <div class="admin pt-4">
-    <div class="box m-4" v-for="u in users">
-      <h1 class="title is-4 m-0">
-        {{ u[0] }}
-        <span class="icon m-1" @click="disable(u)" style="cursor: pointer;">
-          <i class="mdi mdi-24px mdi-account-cancel" :style="u[3] ? 'color: grey' : 'color: red'"/>
-        </span>
-        <span class="icon m-1" @click="able(u)" style="cursor: pointer;">
-          <i class="mdi mdi-24px mdi-account-check" :style="u[3] ? 'color: #4F97D6' : 'color: grey'"/>
-        </span>
-        <span class="icon m-1" @click="deleteUser(u)" style="cursor: pointer;">
-          <i class="mdi mdi-24px mdi-trash-can-outline" style="color: red;" />
-        </span>
-      </h1>
-      <p class="is-5">{{ u[2] }} &nbsp; <code>{{ u[1] }}</code></p>
+    <p v-if="loading">Loading...</p>
+    <div class="box" style="max-width: 80vw; margin: 0 auto;" v-else>
+      <label class="label is-flex">
+        _id：
+        <input class="input is-small ml-3" v-model="channel._id" :disabled="!isRoot" type="text">
+      </label>
+      <label class="label is-flex">
+        名称:
+        <input class="input is-small ml-3" v-model="channel.name" :disabled="!isRoot" type="text">
+      </label>
+      <label class="checkbox is-block m-2">
+        <input class="checkbox is-small mr-3" v-model="channel.public" :disabled="!isRoot" type="checkbox">
+        登录用户自动成为成员
+      </label>
+      <label class="checkbox is-block m-2">
+        <input class="checkbox is-small mr-3" v-model="channel.hide" :disabled="!isRoot" type="checkbox">
+        仅成员可见
+      </label>
+      <label class="checkbox is-block m-2">
+        <input class="checkbox is-small mr-3" v-model="channel.anonymous" :disabled="!isRoot" type="checkbox">
+        允许匿名
+      </label>
+      <hr>
+      <label class="label is-flex">
+        背景图片链接:
+        <input class="input is-small ml-3" v-model="channel.bg" type="text">
+      </label>
+      <label class="label is-flex">
+        成员:
+        <input class="input is-small ml-3" v-model="memberString" type="text">
+      </label>
+      <label class="label is-flex">
+        管理员:
+        <input class="input is-small ml-3" v-model="adminString" type="text">
+      </label>
+      <hr>
+      <div class="buttons">
+        <button class="button is-primary" :class="{ 'is-loading': loading }" @click="submit">提交信息</button>
+        <button class="button is-danger" v-if="isRoot" :class="{ 'is-loading': loading }" @click="remove">删除频道</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { token } from '../plugins/action.js'
-import { SS } from '../plugins/state.js'
-ref: users = []
+import { useRoute } from 'vue-router'
+import { token, popError } from '../plugins/action.js'
+import { SS, channel } from '../plugins/state.js'
+const route = useRoute()
 ref: loading = true
-getUser()
+ref: isRoot = SS.id === '3y14J0Utxk'
 
-function able (u) {
-  if (u.enable == true) return
-  u.enable = true
-  putUser(u)
-}
+ref: memberString = ''
+ref: adminString = ''
 
-function disable (u) {
-  if (u.enable == false) return
-  u.enable = false
-  putUser(u)
-}
+axios.get('/api/channel/admin/' + route.params.id, token())
+  .then(res => {
+    channel.value = res.data
+    memberString = channel.value.members.join()
+    adminString = channel.value.admins.join()
+  })
+  .catch(popError)
+  .finally(() => { loading = false })
 
-async function getUser () {
+async function submit () {
   loading = true
-  await axios.get(`/api/${SS.channel}/user`, token())
-    .then(res => {
-      users = res.data
-      users = users.sort((a, b) => a[3] && !b[3])
-    })
-    .catch(err => { 
-      Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error')
-      console.error(err)
-    })
+  channel.value.members = memberString.split(',').filter(x => x.length)
+  channel.value.admins = adminString.split(',').filter(x => x.length)
+  const res = await axios.put('/api/channel/' + channel.value._id, channel.value, token())
+    .then(res => res.data)
+    .catch(popError)
+  if (res) Swal.fire('提交成功', res, 'success')
   loading = false
 }
 
-async function putUser (u) {
-  loading = true
-  await axios.put(`/api/${SS.channel}`, { u }, token())
-    .then(res => { window.Swal.fire('成功', res.data, 'success') })
-    .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
-  loading = false
-}
-
-async function deleteUser (u) {
-  loading = true
+async function remove () {
   const r = await Swal.fire({
-    title: '你确定要删除吗？',
-    text: "此操作不可以撤销",
+    title: '你确定要删除频道吗？',
+    text: '所有讨论和回复也会被删除',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: '确认',
     cancelButtonText: '取消'
   })
   if (!r.isConfirmed) return
-
-  await axios.delete('/api/user/' + u._id, token())
-    .then(res => { window.Swal.fire('成功', res.data, 'success') })
-    .catch(err => { window.Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
-  getUser()
+  loading = true
+  const res = await axios.delete('/api/channel/' + channel.value._id, token())
+    .then(res => res.data)
+    .catch(popError)
+  if (res) {
+    Swal.fire('提交成功', res, 'success')
+    router.push('/')
+  }
   loading = false
 }
 </script>
@@ -83,5 +101,11 @@ async function deleteUser (u) {
 div.admin {
   min-height: 93vh;
   background: #eee;
+}
+label.label {
+  justify-content: space-between;
+}
+input.input {
+  max-width: 80%;
 }
 </style>

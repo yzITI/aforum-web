@@ -3,17 +3,12 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: '论坛',
-    component: () => import('./views/Dashboard.vue')
+    component: () => import('./views/Home.vue')
   },
   {
-    path: '/home/:id',
-    component: () => import('./views/ChannelHome.vue')
-  },
-  {
-    path: '/edit',
-    name: '编辑发布',
-    component: () => import('./views/Edit.vue')
+    path: '/discuss/:id',
+    name: 'channel',
+    component: () => import('./views/Discuss.vue')
   },
   {
     path: '/topic/:id',
@@ -21,24 +16,22 @@ const routes = [
     component: () => import('./views/Topic.vue')
   },
   {
-    path: '/admin',
-    name: '管理',
-    component: () => import('./views/Admin.vue')
-  },
-  {
     path: '/login',
-    name: '登陆',
+    name: '登录',
     component: () => import('./views/Login.vue')
   },
   {
     path: '/channel/:id',
-    name: '频道',
-    component: () => import('./views/ChannelPublic.vue')
+    component: () => import('./views/Channel.vue')
+  },
+  {
+    path: '/admin/:id',
+    name: '管理 - channel',
+    component: () => import('./views/Admin.vue')
   }
 ]
 
 const router = createRouter({ history: createWebHashHistory(), routes }) 
-
 router.afterEach(() => {
   Swal.close()
 })
