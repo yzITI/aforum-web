@@ -43,7 +43,7 @@ export const getComments = (tid) => axios.get('/api/comment?topic=' + tid, token
 
 
 export const postComment = () => {
-  return axios.post(`/api/comment/${editor.value._id}?topic=${topic.value._id}`, editor.value, token())
+  return axios.put(`/api/comment/${editor.value._id}?topic=${topic.value._id}`, editor.value, token())
     .then(res => '发布评论成功')
     .catch(popError)
 }
