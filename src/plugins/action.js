@@ -7,13 +7,14 @@ export async function popError (err) {
   return false
 }
 
-export const getChannel = (cid) => axios.get('/api/channel/' + cid, token())
-  .then(res => {
-    channel.value = res.data
-    list.value = res.data.public
-    return true
-  })
-  .catch(popError)
+export const getChannel = (cid) =>
+  axios.get('/api/channel/' + cid, token())
+    .then(res => {
+      channel.value = res.data
+      list.value = res.data.public
+      return true
+    })
+    .catch(popError)
 
 export const getList = (cid, timestamp=null) => {
   let url = `/api/topic/?channel=${cid}`
@@ -23,12 +24,10 @@ export const getList = (cid, timestamp=null) => {
     .catch(popError)
 }
 
-export const getTopic = (id, timestamp=null) => {
-  let url = `/api/topic/${id}`
-  return axios.get(url, token())
+export const getTopic = (id, timestamp=null) =>
+  axios.get(`/api/topic/${id}`, token())
     .then(res => { topic.value = res.data })
     .catch(popError)
-}
 
 export const publishTopic = () => {
   if (!editor.value) return false
@@ -37,28 +36,26 @@ export const publishTopic = () => {
     .catch(popError)
 }
 
-export const getComments = (tid) => axios.get('/api/comment?topic=' + tid, token())
-  .then(res => { comments.value = res.data })
-  .catch(popError)
+export const getComments = (tid) =>
+  axios.get('/api/comment?topic=' + tid, token())
+    .then(res => { comments.value = res.data })
+    .catch(popError)
 
 
-export const postComment = () => {
-  return axios.put(`/api/comment/${editor.value._id}?topic=${topic.value._id}`, editor.value, token())
+export const putComment = () =>
+  axios.put(`/api/comment/${editor.value._id}?topic=${topic.value._id}`, editor.value, token())
     .then(res => '发布评论成功')
     .catch(popError)
-}
 
-export const deleteComment = (id) => {
-  return axios.delete(`/api/comment/${id}`, token())
+export const deleteComment = (id) =>
+  axios.delete(`/api/comment/${id}`, token())
     .then(res => {
       Swal.fire('成功', res.data, 'success')
-      topic.value.comments = topic.value.comments.filter(a => a._id !== id)
+      comments.value = comments.value.filter(a => a._id !== id)
     })
     .catch(popError)
-}
 
-export const searchContent = () => {
-  return axios.get(`api/topic/search/${keyword.value}`, token())
+export const searchContent = () =>
+  axios.get(`api/topic?channel=${channel.value._id}&keyword=${keyword.value}`, token())
     .then(res => { result.value = res.data })
     .catch(popError)
-}
