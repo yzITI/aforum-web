@@ -30,6 +30,7 @@
       <label class="label is-flex">
         成员:
         <input class="input is-small ml-3" v-model="memberString" type="text">
+        <button @click="showUsers++">成员管理</button>
       </label>
       <label class="label is-flex">
         管理员:
@@ -41,6 +42,7 @@
         <button class="button is-danger" v-if="isRoot" :class="{ 'is-loading': loading }" @click="remove">删除频道</button>
       </div>
     </div>
+    <users v-if="showUsers" :key="showUsers" />
   </div>
 </template>
 
@@ -48,9 +50,11 @@
 import { useRoute } from 'vue-router'
 import { token, popError } from '../plugins/action.js'
 import { SS, channel } from '../plugins/state.js'
+import Users from '../components/Users.vue'
 const route = useRoute()
 ref: loading = true
 ref: isRoot = SS.id === '3y14J0Utxk'
+ref: showUsers = 0
 
 ref: memberString = ''
 ref: adminString = ''
