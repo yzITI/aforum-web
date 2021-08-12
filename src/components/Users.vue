@@ -5,47 +5,40 @@
       <input class="input is-normal" v-model="keyword" placeholder="搜索" />
     </div>
     <div class="modal-content">
-      <div class="user-list">
-        <h1>{{ channel.name }}</h1>
+      <div class="user-list" style="background-color: white;">
+        <h1 class="title is-5">成员(*为管理员)</h1>
         <div v-for="u in users">
-          <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) != -1">
-            <div>
-              <div class="title is-5 m-1">{{ u.name }}</div>
-              <code>{{ u.group }}</code>
-            </div>
+          <div class="user-info p-1" v-if="channel.members.indexOf(u._id) != -1">
             <span class="icon">
               <i class="mdi mdi-18px mdi-trash-can-outline" @click="remove(u._id)"/>
             </span>
             <span class="icon">
               <i class="mdi mdi-18px mdi-account-star-outline" @click="addAdmin(u._id)"/>
             </span>
+            <div class="is-6">{{ u.name }}</div>
+            <code>{{ u.group }}</code>
           </div>
-          <div class="box p-2 m-2" v-if="channel.admins.indexOf(u._id) != -1">
-            <div>
-              <div class="title is-5 m-1">{{ u.name }}</div>
-              <div class="admin-tag is-6">管理员</div>
-              <code>{{ u.group }}</code>
-            </div>
+          <div class="user-info p-1" v-if="channel.admins.indexOf(u._id) != -1">
             <span class="icon">
               <i class="mdi mdi-18px mdi-trash-can-outline" @click="remove(u._id)"/>
             </span>
             <span class="icon">
               <i class="mdi mdi-18px mdi-account-minus-outline" @click="removeAdmin(u._id)"/>
             </span>
+            <div class="is-6">{{ u.name }}*</div>
+            <code>{{ u.group }}</code>
           </div>
         </div>
       </div>
       <div class="user-list">
-        <h1>其他</h1>
+        <h1 class="title is-5">其他用户</h1>
         <div v-for="u in users">
-          <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) == -1 && channel.admins.indexOf(u._id) == -1">
-            <div>
-              <div class="title is-5 m-1">{{ u.name }}</div>
-              <code>{{ u.group }}</code>
-            </div>
+          <div class="user-info p-1" v-if="channel.members.indexOf(u._id) == -1 && channel.admins.indexOf(u._id) == -1">
             <span class="icon">
               <i class="mdi mdi-18px mdi-account-plus-outline" @click="add(u._id)"/>
             </span>
+            <div class="is-6">{{ u.name }}</div>
+            <code>{{ u.group }}</code>
           </div>
         </div>
       </div>
@@ -125,6 +118,7 @@ async function removeAdmin (id) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 960px;
   width: 95vw;
   border-radius: 0;
 }
@@ -133,5 +127,13 @@ async function removeAdmin (id) {
 }
 .admin-tag {
   color: grey;
+}
+.user-info {
+  display: flex;
+}
+@media (max-width: 560px) {
+  .modal-content {
+    flex-direction: column;
+  }
 }
 </style>

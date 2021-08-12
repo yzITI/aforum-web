@@ -2,13 +2,13 @@
   <div class="admin pt-4">
     <p v-if="loading">Loading...</p>
     <div class="box" style="max-width: 80vw; margin: 0 auto;" v-else>
-      <label class="label is-flex">
+      <label class="label">
         _id：
-        <input class="input is-small ml-3" v-model="channel._id" :disabled="!isRoot" type="text">
+        <input class="input is-small mt-1" v-model="channel._id" :disabled="!isRoot" type="text">
       </label>
-      <label class="label is-flex">
+      <label class="label">
         名称:
-        <input class="input is-small ml-3" v-model="channel.name" :disabled="!isRoot" type="text">
+        <input class="input is-small mt-1" v-model="channel.name" :disabled="!isRoot" type="text">
       </label>
       <label class="checkbox is-block m-2">
         <input class="checkbox is-small mr-3" v-model="channel.public" :disabled="!isRoot" type="checkbox">
@@ -23,13 +23,13 @@
         允许匿名
       </label>
       <hr>
-      <label class="label is-flex">
+      <label class="label">
         背景图片链接:
-        <input class="input is-small ml-3" v-model="channel.bg" type="text">
+        <input class="input is-small mt-1" v-model="channel.bg" type="text">
       </label>
+      <button class="button is-normal mt-2" @click="showUsers++">成员管理</button>
       <hr>
       <div class="buttons">
-        <button class="button is-normal" @click="showUsers++">成员管理</button>
         <button class="button is-primary" :class="{ 'is-loading': loading }" @click="submit">提交信息</button>
         <button class="button is-danger" v-if="isRoot" :class="{ 'is-loading': loading }" @click="remove">删除频道</button>
       </div>
@@ -90,11 +90,5 @@ async function remove () {
 div.admin {
   min-height: 93vh;
   background: #eee;
-}
-label.label {
-  justify-content: space-between;
-}
-input.input {
-  max-width: 80%;
 }
 </style>
