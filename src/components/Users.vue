@@ -38,7 +38,7 @@
       <div class="user-list">
         <h1>其他</h1>
         <div v-for="u in users">
-          <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) == -1">
+          <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) == -1 || channel.admins.indexOf(u._id) == -1">
             <div>
               <div class="title is-5 m-1">{{ u.name }}</div>
               <code>{{ u.group }}</code>
