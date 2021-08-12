@@ -16,11 +16,6 @@ export const getChannel = (cid) =>
     })
     .catch(popError)
 
-export const putChannel = (cid) =>
-  axios.put('api/channel/' + cid, channel.value, token())
-    .then(() => '修改成功')
-    .catch(popError)
-
 export const getList = (cid, timestamp=null) => {
   let url = `/api/topic/?channel=${cid}`
   if (timestamp != null) url += '&timestamp=' + timestamp

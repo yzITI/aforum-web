@@ -1,9 +1,12 @@
 <template>
   <div class="modal is-active" v-if="modal">
     <div class="modal-background" @click="modal = false" />
+    <div class="header m-1">
+      <input class="input is-normal" v-model="keyword" placeholder="搜索" />
+    </div>
     <div class="modal-content">
       <div class="user-list">
-        <h1>{{ channel.name }}成员</h1>
+        <h1>{{ channel.name }}</h1>
         <div v-for="u in users">
           <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) != -1">
             <div>
@@ -13,11 +16,27 @@
             <span class="icon">
               <i class="mdi mdi-18px mdi-trash-can-outline" @click="remove(u._id)"/>
             </span>
+            <span class="icon">
+              <i class="mdi mdi-18px mdi-account-star-outline" @click="addAdmin(u._id)"/>
+            </span>
+          </div>
+          <div class="box p-2 m-2" v-if="channel.admins.indexOf(u._id) != -1">
+            <div>
+              <div class="title is-5 m-1">{{ u.name }}</div>
+              <div class="admin-tag is-6">管理员</div>
+              <code>{{ u.group }}</code>
+            </div>
+            <span class="icon">
+              <i class="mdi mdi-18px mdi-trash-can-outline" @click="remove(u._id)"/>
+            </span>
+            <span class="icon">
+              <i class="mdi mdi-18px mdi-account-minus-outline" @click="removeAdmin(u._id)"/>
+            </span>
           </div>
         </div>
       </div>
       <div class="user-list">
-        <h1>其他用户</h1>
+        <h1>其他</h1>
         <div v-for="u in users">
           <div class="box p-2 m-2" v-if="channel.members.indexOf(u._id) == -1">
             <div>
@@ -31,20 +50,17 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      <div class="button is-primary" :class="{ 'is-loading': loading }" @click="submit">提交修改</div>
-      <input class="input is-normal" v-model="keyword" />
-    </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { token, popError, putChannel } from '../plugins/action.js'
-import { channel, keyword } from '../plugins/state.js'
+import { token, popError} from '../plugins/action.js'
+import { channel } from '../plugins/state.js'
 ref: modal = true
 ref: all = []
 ref: loading = false
+ref: keyword = ''
 
 axios.get('/api/general/users?channel=' + channel.value._id, token())
   .then(res => {
@@ -54,14 +70,15 @@ axios.get('/api/general/users?channel=' + channel.value._id, token())
 
 const users = computed(() => {
   const res = []
-  if (keyword.value) {
+  if (keyword) {
     for (const u of all) {
-      const reg = new RegExp(keyword.value, 'i')
+      const reg = new RegExp(keyword, 'i')
       let pass = false
       if (reg.test(u.name)) pass = true
       if (reg.test(u.group)) pass = true
       if (pass) res.push(u)
     }
+    res.sort((a, b) => (channel.value.admins.indexOf(b._id)))
     return res
   }
   return all
@@ -75,11 +92,14 @@ async function add (id) {
   channel.value.members.push(id)
 }
 
-async function submit () {
-  loading = true
-  const res = await putChannel(channel.value._id)
-  if (res) window.Swal.fire('成功', res, 'success')
-  loading = false
+async function addAdmin (id) {
+  channel.value.members.splice(channel.value.members.indexOf(id))
+  channel.value.admins.push(id)
+}
+
+async function removeAdmin (id) {
+  channel.value.admins.splice(channel.value.members.indexOf(id))
+  channel.value.members.push(id)
 }
 
 </script>
@@ -101,12 +121,17 @@ async function submit () {
   flex-grow: 1;
   resize: none;
 }
-.footer {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 95vw;
+  border-radius: 0;
 }
 .icon {
   cursor: pointer;
+}
+.admin-tag {
+  color: grey;
 }
 </style>

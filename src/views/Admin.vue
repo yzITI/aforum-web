@@ -27,17 +27,9 @@
         背景图片链接:
         <input class="input is-small ml-3" v-model="channel.bg" type="text">
       </label>
-      <label class="label is-flex">
-        成员:
-        <input class="input is-small ml-3" v-model="memberString" type="text">
-        <button @click="showUsers++">成员管理</button>
-      </label>
-      <label class="label is-flex">
-        管理员:
-        <input class="input is-small ml-3" v-model="adminString" type="text">
-      </label>
       <hr>
       <div class="buttons">
+        <button class="button is-normal" @click="showUsers++">成员管理</button>
         <button class="button is-primary" :class="{ 'is-loading': loading }" @click="submit">提交信息</button>
         <button class="button is-danger" v-if="isRoot" :class="{ 'is-loading': loading }" @click="remove">删除频道</button>
       </div>
@@ -56,22 +48,15 @@ ref: loading = true
 ref: isRoot = SS.id === '3y14J0Utxk'
 ref: showUsers = 0
 
-ref: memberString = ''
-ref: adminString = ''
-
 axios.get('/api/channel/admin/' + route.params.id, token())
   .then(res => {
     channel.value = res.data
-    memberString = channel.value.members.join()
-    adminString = channel.value.admins.join()
   })
   .catch(popError)
   .finally(() => { loading = false })
 
 async function submit () {
   loading = true
-  channel.value.members = memberString.split(',').filter(x => x.length)
-  channel.value.admins = adminString.split(',').filter(x => x.length)
   const res = await axios.put('/api/channel/' + channel.value._id, channel.value, token())
     .then(res => res.data)
     .catch(popError)
