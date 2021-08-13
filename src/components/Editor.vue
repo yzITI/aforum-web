@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <header class="card-header">
-      <p class="card-header-title mr-6" @click="expand = true">编辑{{ editor.title ? '讨论' : '回复' }}</p>
+      <p class="card-header-title mr-6" @click="expand = true">{{ title }}</p>
       <div class="card-header-icon">
         <span class="icon" v-if="expand" @click="expand = false">
           <i class="mdi mdi-24px mdi-window-minimize"></i>
@@ -45,6 +45,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { editor } from '../plugins/state.js'
 import Markdown from './Markdown.vue'
 import File from './File.vue'
@@ -55,6 +56,11 @@ ref: showPreview = true
 ref: showRaw = true
 ref: showFile = 0
 ref: showPublish = 0
+const title = computed(() => {
+  if (typeof editor.value.title === 'undefined') return '添加回复'
+  if (editor.value.title) return '编辑讨论内容'
+  else return '创建讨论内容'
+})
 
 function checkShow () {
   if (window.innerWidth < 700) showPreview = !showRaw

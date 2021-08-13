@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; height: 100%;">
+  <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; min-height: 93vh;">
     <h1 v-if="!topic" class="title is-5 m-3">正在载入...</h1>
     <div class="topic m-4" v-else>
       <p class="is-5 p-1" style="color: #757575;">
