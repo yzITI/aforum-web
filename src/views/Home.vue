@@ -1,5 +1,5 @@
 <template>
-  <banner bg="/bg.jpg" title="在线讨论平台">
+  <banner bg="/bg.jpg" title="在线讨论平台" logo="logo">
     <button class="button is-primary" v-if="!SS.token" @click="login">点击登录</button>
   </banner>
   <div class="notification is-info is-light mt-4" v-if="!SS.token"
