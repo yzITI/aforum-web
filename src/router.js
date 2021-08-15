@@ -6,14 +6,14 @@ const routes = [
     component: () => import('./views/Home.vue')
   },
   {
-    path: '/discuss/:id',
+    path: '/list/:id',
     name: 'channel',
-    component: () => import('./views/Discuss.vue')
+    component: () => import('./views/List.vue')
   },
   {
-    path: '/topic/:id',
+    path: '/discuss/:id',
     name: '讨论',
-    component: () => import('./views/Topic.vue')
+    component: () => import('./views/Discuss.vue')
   },
   {
     path: '/login',

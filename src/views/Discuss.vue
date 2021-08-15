@@ -1,62 +1,118 @@
 <template>
-  <div class="discuss">
-    <button v-if="channel.permission > 0 && !editor" class="button is-primary" style="position: fixed; bottom: 5vh; right: 5vh; z-index: 100; border-radius: 888px; width: 4rem; height: 4rem" @click="write">
-      <span class="icon">
-        <i class="mdi mdi-24px mdi-pencil" />
-      </span>
-    </button>
-    <list></list>
+  <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; min-height: 93vh;">
+    <h1 v-if="!discuss" class="title is-5 m-3">正在载入...</h1>
+    <div class="discuss m-4" v-else>
+      <p class="is-5 p-1" style="color: #757575;">
+        {{ parseDate(discuss.timestamp) }}
+        <br>
+        {{ discuss.author }}
+      </p>
+      <h1 class="title m-0 mt-2 is-2">
+        {{ discuss.title }}
+        <div class="buttons is-inline-block">
+          <button class="button is-info is-small ml-2 is-light" v-if="discuss.permission == 2" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
+          <button class="button is-danger is-small is-light" v-if="discuss.permission == 2 && discuss._id !== discuss.channel" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
+        </div>
+      </h1>
+      <span v-for="(tag, index) in discuss.tag" :key="index" class="tag is-info is-light" style="margin: 5px 2px;">{{ tag }}</span>
+      <hr>
+      <markdown class="m-2" :content="discuss.content"></markdown>
+    </div>
+    <div v-if="SS.token">
+      <button class="button is-primary mb-2 ml-4" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
+    </div>
+    <div class="comment ml-4 mr-4 mt-2" v-if="discuss && commentList.length">
+      <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
+    </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import List from '../components/List.vue'
-import { getList, getChannel } from '../plugins/action.js'
-import { SS, channel, editor, topic } from '../plugins/state.js'
-import template from '../plugins/template.js'
-const router = useRouter(), route = useRoute()
+import Markdown from '../components/Markdown.vue'
+import Comment from '../components/Comment.vue'
+import { SS, discuss, comments, editor, channel } from '../plugins/state.js'
+import { getDiscuss, getComments, token, popError } from '../plugins/action.js'
 
-topic.value = null
+const route = useRoute(), router = useRouter()
+const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
-async function init () {
-  if (!SS.token) {
-    Swal.fire('错误', '请先登录', 'error')
-      .then(() => router.push('/'))
-  } else {
-    const cid = route.params.id
-    if (!channel.value.name) await getChannel(cid)
-    getList(cid)
-  }
+ref: loading = false
+ref: keyword = ''
+
+getComments(route.params.id)
+getDiscuss(route.params.id)
+  .then(() => { if (!channel.value._id) channel.value._id = discuss.value.channel })
+
+const commentList = computed(() => {
+  if (!keyword.value) return comments.value
+  const reg = new RegExp(keyword.value, 'i')
+  return comments.value.filter(x => reg.test(x.content) || reg.test(x.author))
+})
+
+function parseDate (timestamp) {
+  if (!timestamp || typeof (timestamp) === 'undefined') return
+  const s = new Date(timestamp - tzoffset).toISOString().split('T')
+  const date = s[0]
+  const time = s[1].substr(0, 8)
+  return date + ' ' + time
 }
-init()
 
-function write() {
+function edit () {
   editor.value = {
-    _id: Math.random().toString(36).substr(2),
-    content: template,
-    title: ''
-  }
-  if (channel.value.anonymous) {
-    editor.value.author = false
-    editor.value.anonymous = false
+    _id: discuss.value._id,
+    content: discuss.value.content,
+    title: discuss.value.title
   }
   if (channel.value.permission > 1) {
-    editor.value.public = false
-    editor.value.pin = false
-    editor.value.hide = false
-    editor.value.restrict = false
-    editor.value.tag = []
+    editor.value.public = discuss.value.public
+    editor.value.pin = Boolean(discuss.value.pin)
+    editor.value.hide = discuss.value.hide
+    editor.value.restrict = discuss.value.restrict
+    editor.value.tag = discuss.value.tag
   }
+}
+
+function writeComment () {
+  editor.value = {
+    _id: Math.random().toString(36).substr(2),
+    content: ''
+  }
+  if (discuss.value.anonymous) editor.value.author = false
+}
+
+async function remove () {
+  const r = await Swal.fire({
+    title: '你确定要删除吗？',
+    text: '所有回复也会被删除',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  if (!r.isConfirmed) return
+
+  loading = true
+  axios.delete(`/api/discuss/${route.params.id}`, token())
+    .then(res => {
+      Swal.fire('成功', res.data, 'success')
+        .then(() => { router.push('/discuss/' + channel.value._id) })
+    })
+    .catch(err => { Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
+    .finally(() => loading = false)
 }
 </script>
 
 <style scoped>
-.discuss {
-  min-height: 93vh;
-  background-color: #ddd;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+.discuss, .comment {
+  background-color: white;
+  padding: 0 20px 10px 20px;
+  border-radius: 10px;
+  position: relative;
+}
+.comment {
+  background-color: #EEEEEE;
+  padding: 0px;
 }
 </style>

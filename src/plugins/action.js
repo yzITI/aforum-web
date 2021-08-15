@@ -1,4 +1,4 @@
-import { SS, channel, list, topic, comments, editor, result, keyword } from './state.js'
+import { SS, channel, list, discuss, comments, editor, result, keyword } from './state.js'
 
 export const token = () => ({ headers: { token: SS.token } })
 
@@ -17,33 +17,33 @@ export const getChannel = (cid) =>
     .catch(popError)
 
 export const getList = (cid, timestamp=null) => {
-  let url = `/api/topic/?channel=${cid}`
+  let url = `/api/discuss/?channel=${cid}`
   if (timestamp != null) url += '&timestamp=' + timestamp
   return axios.get(url, token())
     .then(res => { list.value = res.data })
     .catch(popError)
 }
 
-export const getTopic = (id, timestamp=null) =>
-  axios.get(`/api/topic/${id}`, token())
-    .then(res => { topic.value = res.data })
+export const getDiscuss = (id, timestamp=null) =>
+  axios.get(`/api/discuss/${id}`, token())
+    .then(res => { discuss.value = res.data })
     .catch(popError)
 
-export const publishTopic = () => {
+export const publishDiscuss = () => {
   if (!editor.value) return false
-  return axios.put(`/api/topic/${editor.value._id}?channel=${channel.value._id}`, editor.value, token())
+  return axios.put(`/api/discuss/${editor.value._id}?channel=${channel.value._id}`, editor.value, token())
     .then(() => '发布讨论成功')
     .catch(popError)
 }
 
 export const getComments = (tid) =>
-  axios.get('/api/comment?topic=' + tid, token())
+  axios.get('/api/comment?discuss=' + tid, token())
     .then(res => { comments.value = res.data })
     .catch(popError)
 
 
 export const putComment = () =>
-  axios.put(`/api/comment/${editor.value._id}?topic=${topic.value._id}`, editor.value, token())
+  axios.put(`/api/comment/${editor.value._id}?discuss=${discuss.value._id}`, editor.value, token())
     .then(res => '发布评论成功')
     .catch(popError)
 
@@ -56,6 +56,6 @@ export const deleteComment = (id) =>
     .catch(popError)
 
 export const searchContent = () =>
-  axios.get(`api/topic?channel=${channel.value._id}&keyword=${keyword.value}`, token())
+  axios.get(`api/discuss?channel=${channel.value._id}&keyword=${keyword.value}`, token())
     .then(res => { result.value = res.data })
     .catch(popError)

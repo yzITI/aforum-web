@@ -31,8 +31,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { topic, SS, channel, editor } from '../plugins/state.js'
-import { publishTopic, putComment, getTopic, getComments, getList } from '../plugins/action.js'
+import { discuss, SS, channel, editor } from '../plugins/state.js'
+import { publishDiscuss, putComment, getDiscuss, getComments, getList } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 
 ref: loading = false
@@ -56,7 +56,7 @@ function add () {
 function refresh () {
   const id = route.params.id
   if (route.name == '讨论') {
-    if (editor.value.title) getTopic(id)
+    if (editor.value.title) getDiscuss(id)
     else getComments(id)
   }
   if (route.name == 'channel') getList(id)
@@ -64,7 +64,7 @@ function refresh () {
 
 async function submit () {
   loading = true
-  const res = editor.value.title ? await publishTopic() : await putComment()
+  const res = editor.value.title ? await publishDiscuss() : await putComment()
   if (res) {
     modal = false
     window.Swal.fire('成功', res, 'success')

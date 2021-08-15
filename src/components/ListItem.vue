@@ -28,7 +28,7 @@ const parseDate = (timestamp) => {
 }
 
 const detail = (id) => {
-  router.push('/topic/' + id)
+  router.push('/discuss/' + id)
 }
 
 </script>

@@ -44,7 +44,7 @@ import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
 
 import { useRouter, useRoute } from 'vue-router'
-import { topic, keyword, SS, channel, list } from '../plugins/state.js'
+import { discuss, keyword, SS, channel, list } from '../plugins/state.js'
 import { getChannel } from '../plugins/action.js'
 
 const router = useRouter(), route = useRoute()
@@ -53,7 +53,7 @@ getChannel(route.params.id)
   .then(res => { if (!res) router.push('/') })
 
 // clean
-topic.value = null
+discuss.value = null
 keyword.value = ''
 list.value = []
 
