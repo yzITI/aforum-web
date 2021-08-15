@@ -10,7 +10,7 @@
         </button>
       </p>
       <p class="control" v-if="SS.token">
-        <button class="button is-primary" @click="router.push('/discuss/' + channel._id)">
+        <button class="button is-primary" @click="router.push('/list/' + channel._id)">
           <span class="icon is-small">
             <i class="mdi mdi-18px mdi-arrow-right"></i>
           </span>

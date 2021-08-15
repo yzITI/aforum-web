@@ -25,7 +25,7 @@ const route = useRoute(), router = useRouter()
 const title = computed(() => route.name.replace('channel', channel.value.name))
 
 function home () {
-  if (channel.value && route.name !== 'channel') router.push('/discuss/' + channel.value._id)
+  if (channel.value && route.name !== 'channel') router.push('/list/' + channel.value._id)
   else router.push('/')
 }
 </script>

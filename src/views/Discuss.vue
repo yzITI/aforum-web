@@ -97,7 +97,7 @@ async function remove () {
   axios.delete(`/api/discuss/${route.params.id}`, token())
     .then(res => {
       Swal.fire('成功', res.data, 'success')
-        .then(() => { router.push('/discuss/' + channel.value._id) })
+        .then(() => { router.push('/list/' + channel.value._id) })
     })
     .catch(err => { Swal.fire('错误', err.response ? err.response.data : '网络错误', 'error') })
     .finally(() => loading = false)
