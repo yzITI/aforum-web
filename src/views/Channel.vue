@@ -59,6 +59,7 @@ list.value = []
 
 function login () {
   if (!SS.token) window.location.href = 'https://cn.aauth.link/#/launch/o0Y5hrvbMd'
+  else router.push('/list/' + route.params.id)
 }
 </script>
 
@@ -70,7 +71,7 @@ section {
 }
 .show {
   background-color: white;
-  padding: 8px 8%;
+  padding: 16px 8% 8px;
 }
 .public {
   padding: 5vh 0;

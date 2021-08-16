@@ -33,4 +33,11 @@ const detail = (id) => {
 
 </script>
 
-<style scoped />
+<style scoped>
+div.box {
+  transition: all 0.3s ease;
+}
+div.box:hover {
+  transform: scaleX(1.04);
+}
+</style>

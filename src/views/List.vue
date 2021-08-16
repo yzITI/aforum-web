@@ -56,6 +56,7 @@ function write() {
   min-height: 93vh;
   background-color: #ddd;
   margin: 0;
+  padding: 16px 3%;
   display: flex;
   flex-direction: column;
 }

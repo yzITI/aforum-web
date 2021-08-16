@@ -67,6 +67,7 @@ function checkShow () {
   else showPreview = showRaw = true
 }
 window.onresize = checkShow
+checkShow()
 
 async function close () {
   const res = await Swal.fire({
@@ -110,10 +111,12 @@ textarea {
   min-width: 50%;
   overflow-y: auto;
   background-color: #eee;
-  padding: 10px 20px;
+  padding: 8px;
   border: 0;
   flex-grow: 1;
   resize: none;
+  font-family: monospace;
+  font-weight: bold;
 }
 .md {
   height: 65vh;
