@@ -20,7 +20,6 @@ const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const { comment } = defineProps(['comment'])
 const route = useRoute()
 
-console.log(comment)
 async function remove () {
   const r = await Swal.fire({
     title: '你确定要删除吗？',

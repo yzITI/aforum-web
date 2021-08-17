@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { SS } from '../plugins/state.js'
+import { SS, editor } from '../plugins/state.js'
 
 ref: modal = true
 ref: file = null
@@ -57,8 +57,8 @@ async function upload () {
   const formData = new FormData()
   formData.append('file', file, file.name)
   try {
-    const res = await axios.post('http://store.yzzx.org/upload', formData, { headers: { token: SS.id } })
-    imgStr = '![](http://store.yzzx.org/file/' + res.data.hash + ')'
+    const res = await axios.post(`/api/general/file?id=${editor.value._id}`, formData, { headers: { token: SS.token } })
+    imgStr = '![](https://discuss.yzzx.org/file/' + res.data + ')'
   } catch (err) {
     console.log(err)
   }
