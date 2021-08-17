@@ -11,20 +11,23 @@ export const getChannel = (cid) =>
   axios.get('/api/channel/' + cid, token())
     .then(res => {
       channel.value = res.data
-      list.value = res.data.public
       return true
     })
     .catch(popError)
 
 export const getList = (cid, timestamp=null) => {
   let url = `/api/discuss/?channel=${cid}`
-  if (timestamp != null) url += '&timestamp=' + timestamp
+  if (timestamp) url += '&timestamp=' + timestamp
   return axios.get(url, token())
-    .then(res => { list.value = res.data })
+    .then(res => {
+      if (timestamp) list.value.push(...res.data)
+      else list.value = res.data
+      return res.data
+    })
     .catch(popError)
 }
 
-export const getDiscuss = (id, timestamp=null) =>
+export const getDiscuss = (id, timestamp) =>
   axios.get(`/api/discuss/${id}`, token())
     .then(res => { discuss.value = res.data })
     .catch(popError)
@@ -36,10 +39,17 @@ export const publishDiscuss = () => {
     .catch(popError)
 }
 
-export const getComments = (tid) =>
-  axios.get('/api/comment?discuss=' + tid, token())
-    .then(res => { comments.value = res.data })
+export const getComments = (tid, timestamp) => {
+  let url = '/api/comment?discuss=' + tid
+  if (timestamp) url += '&timestamp=' + timestamp
+  return axios.get(url, token())
+    .then(res => {
+      if (timestamp) comments.value.push(...res.data)
+      else comments.value = res.data
+      return res.data
+    })
     .catch(popError)
+}
 
 
 export const putComment = () =>

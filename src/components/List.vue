@@ -1,14 +1,27 @@
 <template>
-  <div class="list" v-if="list.length">
-    <list-item v-for="n in all" :key="n._id" :info="n" style="cursor: pointer;"/>
+  <div class="list">
+    <discuss-card v-for="n in all" :key="n._id" :info="n" style="cursor: pointer;"/>
+    <infinite-loading :identifier="identifier" @infinite="load">
+      <div slot="no-more">没有更多啦！</div>
+      <div slot="no-results">暂时还没有讨论呢</div>
+    </infinite-loading>
   </div>
-  <p v-else class="m-4">暂无数据</p>
 </template>
 
 <script setup>
-import { list, keyword, result } from '../plugins/state.js'
-import ListItem from './ListItem.vue'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import InfiniteLoading from 'vue-infinite-loading'
+import { list, keyword, result } from '../plugins/state.js'
+import { getList } from '../plugins/action.js'
+import DiscussCard from './DiscussCard.vue'
+
+const identifier = useRoute().path
+
+async function load ($state) {
+  console.log('Load More')
+  $state.complete()
+}
 
 const all = computed(() => {
   const map = []
@@ -35,7 +48,6 @@ const all = computed(() => {
   res.sort((a, b) => (b.pin - a.pin) || (b.timestamp - a.timestamp))
   return res
 })
-
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column pt-2 pb-2" style="background-color: #EEEEEE; min-height: 93vh;">
+  <div class="pt-2 pb-2" style="background-color: #EEEEEE; min-height: 93vh;">
     <h1 v-if="!discuss" class="title is-5 m-3">正在载入...</h1>
     <div class="discuss m-4" v-else>
       <p class="is-5 p-1" style="color: #757575;">
@@ -19,10 +19,14 @@
       <markdown class="m-2" :content="discuss.content"></markdown>
     </div>
     <div v-if="SS.token">
-      <button class="button is-primary mb-2 ml-4" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
+      <button class="button is-primary ml-4" style="padding: 8px 24px;" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
     </div>
-    <div class="comment ml-4 mr-4 mt-2" v-if="discuss && commentList.length">
+    <div class="comment ml-4 mr-4 mt-2" v-if="discuss">
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
+      <infinite-loading :identifier="did" @infinite="load">
+        <template v-slot:no-more>没有更多内容啦！</template>
+        <template v-slot:no-results>暂时还没有内容呢</template>
+      </infinite-loading>
     </div>
   </div>
 </template>
@@ -30,19 +34,20 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import InfiniteLoading from 'vue-infinite-loading'
 import Markdown from '../components/Markdown.vue'
 import Comment from '../components/Comment.vue'
 import { SS, discuss, comments, editor, channel } from '../plugins/state.js'
 import { getDiscuss, getComments, token, popError } from '../plugins/action.js'
 
 const route = useRoute(), router = useRouter()
+const did = route.params.id
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
 ref: keyword = ''
 
-getComments(route.params.id)
-getDiscuss(route.params.id)
+getDiscuss(did)
   .then(() => { if (!channel.value._id) channel.value._id = discuss.value.channel })
 
 const commentList = computed(() => {
@@ -50,6 +55,13 @@ const commentList = computed(() => {
   const reg = new RegExp(keyword.value, 'i')
   return comments.value.filter(x => reg.test(x.content) || reg.test(x.author))
 })
+
+async function load ($state) {
+  const ts = comments.value.length && comments.value[comments.value.length - 1].timestamp
+  const res = await getComments(did, ts)
+  if (res && res.length) $state.loaded()
+  else $state.complete()
+}
 
 function parseDate (timestamp) {
   if (!timestamp || typeof (timestamp) === 'undefined') return

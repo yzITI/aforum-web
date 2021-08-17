@@ -33,15 +33,15 @@
     </section>
     <section class="public">
       <h1 class="title is-3" style="text-align: center;">精品内容</h1>
-      <list />
+      <discuss-card v-for="d in channel.public" :key="d._id" :info="d" />
     </section>
   </div>
 </template>
 
 <script setup>
 import Banner from '../components/Banner.vue'
-import List from '../components/List.vue'
 import Markdown from '../components/Markdown.vue'
+import DiscussCard from '../components/DiscussCard.vue'
 
 import { useRouter, useRoute } from 'vue-router'
 import { discuss, keyword, SS, channel, list } from '../plugins/state.js'

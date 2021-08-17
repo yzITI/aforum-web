@@ -1,5 +1,5 @@
 <template>
-  <div class="box p-1 m-2" @click="detail(info._id)" :style="cardStyle">
+  <div class="box p-1" @click="detail(info._id)" :style="cardStyle">
     <h1 class="subtitle m-2"><b>{{ info.title }}</b></h1>
     <span v-for="(tag, index) in info.tag" :key="index" class="tag is-info is-light ml-2">{{ tag }}</span>
     <p class="p-2" style="color: #757575;">{{ info.author }} &#8287; {{parseDate(info.timestamp) }}</p>
@@ -30,11 +30,12 @@ const parseDate = (timestamp) => {
 const detail = (id) => {
   router.push('/discuss/' + id)
 }
-
 </script>
 
 <style scoped>
 div.box {
+  margin: 8px 6%;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 div.box:hover {
