@@ -24,6 +24,7 @@
 
 <script setup>
 import { SS, editor } from '../plugins/state.js'
+import { popError } from '../plugins/action.js'
 
 ref: modal = true
 ref: file = null
@@ -60,7 +61,7 @@ async function upload () {
     const res = await axios.post(`/api/general/file?id=${editor.value._id}`, formData, { headers: { token: SS.token } })
     imgStr = '![](https://discuss.yzzx.org/file/' + res.data + ')'
   } catch (err) {
-    console.log(err)
+    popError(err)
   }
   imgLoading = false
 }
