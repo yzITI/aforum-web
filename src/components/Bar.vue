@@ -25,6 +25,10 @@ const route = useRoute(), router = useRouter()
 const title = computed(() => route.name.replace('channel', channel.value.name))
 
 function home () {
+  if (!SS.token) {
+    router.push('/')
+    return
+  }
   if (channel.value && route.name !== 'channel') router.push('/list/' + channel.value._id)
   else router.push('/')
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-2 pb-2" style="background-color: #EEEEEE; min-height: 93vh;">
+  <div class="contain">
     <h1 v-if="!discuss" class="title is-5 m-3">正在载入...</h1>
     <div class="discuss m-4" v-else>
       <p class="is-5 p-1" style="color: #757575;">
@@ -9,7 +9,7 @@
       </p>
       <h1 class="title m-0 mt-2 is-2">
         {{ discuss.title }}
-        <div class="buttons is-inline-block">
+        <div class="buttons is-inline-block mt-2">
           <button class="button is-info is-small ml-2 is-light" v-if="discuss.permission == 2" @click="edit"><span class="icon"><i class="mdi mdi-18px mdi-pencil"></i></span></button>
           <button class="button is-danger is-small is-light" v-if="discuss.permission == 2 && discuss._id !== discuss.channel" color="error" @click="remove"><span class="icon"><i class="mdi mdi-18px mdi-trash-can-outline"></i></span></button>
         </div>
@@ -17,11 +17,12 @@
       <span v-for="(tag, index) in discuss.tag" :key="index" class="tag is-info is-light" style="margin: 5px 2px;">{{ tag }}</span>
       <hr>
       <markdown class="m-2" :content="discuss.content"></markdown>
+      <div v-if="SS.token" style="width: 100%; display: flex; justify-content: flex-end;">
+        <button class="button is-primary m-2" style="padding: 8px 24px;" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
+      </div>
     </div>
-    <div v-if="SS.token">
-      <button class="button is-primary ml-4" style="padding: 8px 24px;" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
-    </div>
-    <div class="comment ml-4 mr-4 mt-2" v-if="discuss">
+    <div class="comment m-4" v-if="discuss">
+      <h3 class="title is-4 mb-3">回复</h3>
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
       <infinite-loading :identifier="did" @infinite="load">
         <template v-slot:no-more>没有更多内容啦！</template>
@@ -46,6 +47,7 @@ const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
 ref: loading = false
 ref: keyword = ''
+comments.value = []
 
 getDiscuss(did)
   .then(() => { if (!channel.value._id) channel.value._id = discuss.value.channel })
@@ -117,14 +119,29 @@ async function remove () {
 </script>
 
 <style scoped>
-.discuss, .comment {
+.discuss {
   background-color: white;
   padding: 0 20px 10px 20px;
   border-radius: 10px;
   position: relative;
 }
-.comment {
-  background-color: #EEEEEE;
-  padding: 0px;
+.contain {
+  background-color: #eee;
+  min-height: 92vh;
+  padding: 8px;
+}
+@media (min-width: 1200px) {
+  .contain {
+    display: flex;
+    height: 92vh;
+  }
+  .discuss {
+    overflow-y: auto;
+  }
+  .comment {
+    overflow-y: auto;
+    min-width: 37vw;
+    max-width: 37vw;
+  }
 }
 </style>
