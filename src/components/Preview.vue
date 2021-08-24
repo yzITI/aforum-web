@@ -11,7 +11,7 @@
 import { defineProps, watch } from 'vue'
 import Markdown from './Markdown.vue'
 const props = defineProps(['random', 'content'])
-ref: md = false
+let md = $ref(false)
 
 watch(() => props.random, () => { md = props.random })
 

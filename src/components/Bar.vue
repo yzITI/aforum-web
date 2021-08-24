@@ -16,13 +16,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { keyword, SS, discuss, channel } from '../plugins/state.js'
 import { searchContent } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 
-const title = computed(() => route.name.replace('channel', channel.value.name))
+const title = $computed(() => route.name.replace('channel', channel.value.name))
 
 function home () {
   if (!SS.token) {

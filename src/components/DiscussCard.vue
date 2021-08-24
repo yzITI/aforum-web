@@ -7,13 +7,13 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue'
+import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 const { info } = defineProps(['info'])
 const router = useRouter()
 
-const cardStyle = computed(() => {
+const cardStyle = $computed(() => {
   if (info._id.indexOf('HOME') === 0) return { borderLeft: '4px solid #5ECDB3' }
   if (info.pin) return { borderLeft: '4px solid #5ECDB3' }
   return {}

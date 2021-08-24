@@ -8,7 +8,7 @@
 import { SS } from '../plugins/state.js'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute(), router = useRouter()
-ref: notice = '正在登录...'
+let notice = $ref('正在登录...')
 const code = route.query.code
 
 if (!code) {

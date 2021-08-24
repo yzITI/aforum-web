@@ -44,9 +44,9 @@ import { token, popError } from '../plugins/action.js'
 import { SS, channel } from '../plugins/state.js'
 import Users from '../components/Users.vue'
 const route = useRoute()
-ref: loading = true
-ref: isRoot = SS.id === '3y14J0Utxk'
-ref: showUsers = 0
+let loading = $ref(true)
+let isRoot = $ref(SS.id === '3y14J0Utxk')
+let showUsers = $ref(0)
 
 axios.get('/api/channel/admin/' + route.params.id, token())
   .then(res => {

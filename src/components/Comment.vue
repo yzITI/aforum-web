@@ -12,7 +12,7 @@
 
 <script setup>
 import Markdown from './Markdown.vue'
-import { computed, defineProps } from 'vue'
+import { defineProps } from 'vue'
 import { useRoute } from 'vue-router'
 import { deleteComment, getComments } from '../plugins/action.js'
 
@@ -33,7 +33,7 @@ async function remove () {
   getComments(route.params.id)
 }
 
-const parseDate = computed(() => {
+const parseDate = $computed(() => {
   const timestamp = comment.timestamp
   if (!timestamp || typeof (timestamp) === 'undefined') return
   const s = new Date(timestamp - tzoffset).toISOString().split('T')

@@ -14,7 +14,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { SS, channel, editor, discuss, keyword, result, list } from '../plugins/state.js'
 import { getList, getChannel } from '../plugins/action.js'
@@ -41,7 +40,7 @@ async function load ($state) {
   else $state.complete()
 }
 
-const all = computed(() => {
+const all = $computed(() => {
   const map = []
   const res = []
   for (const n of list.value) {

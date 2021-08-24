@@ -3,11 +3,11 @@
 </template>
 
 <script setup>
-import { computed, defineProps, nextTick } from 'vue'
+import { defineProps, nextTick } from 'vue'
 
 const mmp = window.markdownit({ html: true })
 const props = defineProps(['content'])
-const md = computed(() => {
+const md = $computed(() => {
   nextTick(() => {
     window.MathJax.typeset()
   })

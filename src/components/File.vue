@@ -26,10 +26,10 @@
 import { SS, editor } from '../plugins/state.js'
 import { popError } from '../plugins/action.js'
 
-ref: modal = true
-ref: file = null
-ref: imgStr = ''
-ref: imgLoading = false
+let modal = $ref(true)
+let file = $ref(null)
+let imgStr = $ref('')
+let imgLoading = $ref(false)
 
 function uploadfile (f) {
   const files = f.target.files || f.dataTransfer.files

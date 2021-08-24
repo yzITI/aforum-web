@@ -29,15 +29,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { discuss, SS, channel, editor } from '../plugins/state.js'
 import { publishDiscuss, putComment, getDiscuss, getComments, getList } from '../plugins/action.js'
 const route = useRoute(), router = useRouter()
 
-ref: loading = false
-ref: modal = true
-ref: tag = ''
+let loading = $ref(false)
+let modal = $ref(true)
+let tag = $ref('')
 const checks = {
   author: '匿名发布',
   anonymous: '允许匿名评论',

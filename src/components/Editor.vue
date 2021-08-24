@@ -45,18 +45,17 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { editor } from '../plugins/state.js'
 import Markdown from './Markdown.vue'
 import File from './File.vue'
 import Publish from './Publish.vue'
 
-ref: expand = true
-ref: showPreview = true
-ref: showRaw = true
-ref: showFile = 0
-ref: showPublish = 0
-const title = computed(() => {
+let expand = $ref(true)
+let showPreview = $ref(true)
+let showRaw = $ref(true)
+let showFile = $ref(0)
+let showPublish = $ref(0)
+const title = $computed(() => {
   if (typeof editor.value.title === 'undefined') return '添加回复'
   if (editor.value.title) return '编辑讨论内容'
   else return '创建讨论内容'

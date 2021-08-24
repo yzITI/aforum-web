@@ -24,8 +24,8 @@ import { SS, editor, channel } from '../plugins/state.js'
 editor.value = null
 channel.value = null
 
-ref: channels = []
-ref: loading = true
+let channels = $ref([])
+let loading = $ref(true)
 axios.get('/api/general/channels', token())
   .then(res => { channels = res.data })
   .catch(err => {

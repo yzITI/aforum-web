@@ -33,7 +33,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InfiniteLoading from 'vue-infinite-loading'
 import Markdown from '../components/Markdown.vue'
@@ -45,14 +44,14 @@ const route = useRoute(), router = useRouter()
 const did = route.params.id
 const tzoffset = (new Date()).getTimezoneOffset() * 60000
 
-ref: loading = false
-ref: keyword = ''
+let loading = $ref(false)
+let keyword = $ref('')
 comments.value = []
 
 getDiscuss(did)
   .then(() => { if (!channel.value._id) channel.value._id = discuss.value.channel })
 
-const commentList = computed(() => {
+const commentList = $computed(() => {
   if (!keyword.value) return comments.value
   const reg = new RegExp(keyword.value, 'i')
   return comments.value.filter(x => reg.test(x.content) || reg.test(x.author))

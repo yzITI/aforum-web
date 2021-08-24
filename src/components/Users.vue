@@ -7,7 +7,7 @@
     <div class="modal-content">
       <div class="user-list" style="background-color: white;">
         <h1 class="title is-5">成员(*为管理员)</h1>
-        <div v-for="u in users">
+        <div v-for="u in users" :key="u._id">
           <div class="user-info p-1" v-if="channel.members.indexOf(u._id) != -1">
             <span class="icon">
               <i class="mdi mdi-18px mdi-trash-can-outline" @click="remove(u._id)"/>
@@ -32,7 +32,7 @@
       </div>
       <div class="user-list">
         <h1 class="title is-5">其他用户</h1>
-        <div v-for="u in users">
+        <div v-for="u in users" :key="u._id">
           <div class="user-info p-1" v-if="channel.members.indexOf(u._id) == -1 && channel.admins.indexOf(u._id) == -1">
             <span class="icon">
               <i class="mdi mdi-18px mdi-account-plus-outline" @click="add(u._id)"/>
@@ -47,13 +47,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { token, popError} from '../plugins/action.js'
 import { channel } from '../plugins/state.js'
-ref: modal = true
-ref: all = []
-ref: loading = false
-ref: keyword = ''
+let modal = $ref(true)
+let all = $ref([])
+let loading = $ref(false)
+let keyword = $ref('')
 
 axios.get('/api/general/users?channel=' + channel.value._id, token())
   .then(res => {
@@ -61,7 +60,7 @@ axios.get('/api/general/users?channel=' + channel.value._id, token())
   })
   .catch(popError)
 
-const users = computed(() => {
+const users = $computed(() => {
   const res = []
   if (keyword) {
     for (const u of all) {
