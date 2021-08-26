@@ -136,6 +136,7 @@ async function remove () {
   }
   .discuss {
     overflow-y: auto;
+    min-width: 50vw;
   }
   .comment {
     overflow-y: auto;
