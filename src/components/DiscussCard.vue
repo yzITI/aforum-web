@@ -41,4 +41,12 @@ div.box {
 div.box:hover {
   transform: scaleX(1.04);
 }
+@media (max-width: 440px) {
+  div.box {
+    margin: 4px 3%;
+  }
+  div.box:hover {
+    transform: none;
+  }
+}
 </style>

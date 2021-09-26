@@ -96,6 +96,12 @@ function write() {
   flex-direction: column;
 }
 
+@media (max-width: 440px) {
+  .list {
+    padding: 8px 0px;
+  }
+}
+
 .write {
   position: fixed;
   bottom: 5vh;

@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <h1 v-if="!discuss" class="title is-5 m-3">正在载入...</h1>
-    <div class="discuss m-4" v-else>
+    <div class="discuss" v-else>
       <p class="is-5 p-1" style="color: #757575;">
         {{ parseDate(discuss.timestamp) }}
         <br>
@@ -21,8 +21,8 @@
         <button class="button is-primary m-2" style="padding: 8px 24px;" v-if="discuss" :disabled="editor" @click="writeComment">添加回复</button>
       </div>
     </div>
-    <div class="comment m-4" v-if="discuss">
-      <h3 class="title is-4 mb-3">回复</h3>
+    <div class="comment" v-if="discuss">
+      <h3 class="title is-4 m-3">回复</h3>
       <comment class="mb-2" v-for="c in commentList" :key="c._id" :comment='c' />
       <infinite-loading :identifier="did" @infinite="load">
         <template v-slot:no-more>没有更多内容啦！</template>
@@ -127,8 +127,18 @@ async function remove () {
 .contain {
   background-color: #eee;
   min-height: 92vh;
-  padding: 8px;
+  padding: 24px;
 }
+
+@media (max-width: 520px) {
+  .contain {
+    padding: 8px;
+  }
+  .discuss {
+    padding: 0 10px 10px;
+  }
+}
+
 @media (min-width: 1200px) {
   .contain {
     display: flex;
@@ -142,6 +152,7 @@ async function remove () {
     overflow-y: auto;
     min-width: 37vw;
     max-width: 37vw;
+    margin-left: 16px;
   }
 }
 </style>
